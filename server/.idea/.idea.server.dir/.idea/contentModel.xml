@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\body-parser" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\connect" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\express" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\express-serve-static-core" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\mime" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\node" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\qs" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\range-parser" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\javascript\typings\express\4.17.1\node_modules\@types\serve-static" t="IncludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_.19.01" t="ExcludeRecursive" />
+    <e p="C:\Users\Acer Nitro 5\Desktop\Proyectos Web\micro-virV3\server" t="IncludeFlat">
+      <e p="node_modules\@types" t="IncludeRecursive">
+        <e p="bson" t="IncludeRecursive" />
+        <e p="node" t="IncludeRecursive" />
+      </e>
+      <e p="node_modules\body-parser" t="IncludeRecursive" />
+      <e p="node_modules\express" t="IncludeRecursive" />
+      <e p="node_modules\mongoose" t="IncludeRecursive" />
+      <e p="node_modules\multer" t="IncludeRecursive" />
+      <e p="node_modules\nodemon" t="IncludeRecursive" />
+      <e p="node_modules\safe-buffer" t="IncludeRecursive" />
+      <e p="node_modules\sift" t="IncludeRecursive" />
+      <e p="node_modules\uuid" t="IncludeRecursive" />
+    </e>
+  </component>
+</project>
