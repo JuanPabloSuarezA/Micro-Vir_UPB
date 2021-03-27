@@ -1,4 +1,5 @@
 ﻿const { Router } = require('express');
+const jwt = require('jsonwebtoken')
 
 const path = require('path');
 const { unlink } = require('fs-extra');
@@ -10,11 +11,13 @@ const router = Router();
 //Modelos
 const Image = require('../models/Image')
 
+//Home
 router.get('/', async (req, res) => {
     const images = await Image.find();
     res.send(images)
 })
 
+//Info image
 router.get('/image/:id', async (req, res) => {
     const { id } = req.params;
     const image = await Image.findById(id);
@@ -22,6 +25,7 @@ router.get('/image/:id', async (req, res) => {
     res.send(image);
 });
 
+//Delete image
 router.get('/image/:id/delete', async (req, res) => {
     try {
         const { id } = req.params;
@@ -35,19 +39,29 @@ router.get('/image/:id/delete', async (req, res) => {
     
 });
 
+//Upload Image
 router.post('/upload', ((req, res) => {
-    try {
-        const image = new Image();
-        image.title = req.body.title;
-        image.fileName = req.file.filename;
-        image.path = "http://192.168.100.38:8080/" + req.file.filename;
-        image.originalName = req.file.originalname;
-        image.mimetype = req.file.mimetype;
-        image.size = req.file.size;
-        res.send(true)
-        image.save();
-    }catch (e) {
-        res.send(false)
+    if (req.body.tipo === "upload"){
+        const token = req.body.Token;
+        const {email} = jwt.verify(token, process.env.JWT_SECRET);
+        try {
+            const image = new Image();
+            image.author = email.toLowerCase();
+            image.title = req.body.title;
+            image.fileName = req.file.filename;
+            image.path = "http://192.168.100.38:8080/" + req.file.filename;
+            image.originalName = req.file.originalname;
+            image.mimetype = req.file.mimetype;
+            image.size = req.file.size;
+            res.send(true)
+            image.save();
+        }catch (e) {
+            res.send(false)
+        }
+    }else{
+        const token = req.body.Token;
+        const {userName} = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({userName})
     }
     
 }))

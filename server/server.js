@@ -1,15 +1,19 @@
 ﻿// call all the required packages
 const express = require('express')
-const bodyParser= require('body-parser')
+const bodyParser = require('body-parser')
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+require('dotenv').config({ path: ("./config.env") });
+
 
 
 
 //Init
 const app = express();
-require('./db')
+app.use(express.json())
+require('./config/db')
+
 
 //Middleware
 app.use(express.urlencoded({extended: false}));
@@ -25,11 +29,15 @@ app.use(multer({storage}).single('image'));
 
 
 //Load Routes
-const ImageRoutes = require('./routers/ImagenRoutes')
+const ImageRoutes = require('./routers/ImagenRoutes');
+const AuthRoutes = require('./routers/authRoutes');
+const PrivateRoutes = require('./routers/privateRoutes');
 
 //Routes
-app.use('/',ImageRoutes);
+app.use('/', ImageRoutes);
+app.use('/auth', AuthRoutes);
+app.use('/private', PrivateRoutes);
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => console.log(`Server start on port ${PORT}`));

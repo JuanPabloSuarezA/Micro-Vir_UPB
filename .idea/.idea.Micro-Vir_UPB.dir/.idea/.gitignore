@@ -2,12 +2,12 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
-/modules.xml
 /contentModel.xml
 /projectSettingsUpdater.xml
-/.idea.client.iml
+/modules.xml
+/.idea.Micro-Vir_UPB.iml
 # Datasource local storage ignored files
-/../../../../../../../../../../:\Users\Acer Nitro 5\Desktop\Proyectos Web\micro-vir\client\.idea\.idea.client.dir\.idea/dataSources/
+/../../../../../../../../../:\Users\Acer Nitro 5\Desktop\Proyectos Web\Micro-Vir_UPB\.idea\.idea.Micro-Vir_UPB.dir\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/

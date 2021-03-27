@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c5e35b6-ac5b-4b79-8c22-7e4ade18bc61" name="Default Changelist" comment="" />
+    <list default="true" id="12fc47e3-7a95-477b-87fd-9c9b36c73b79" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../client/src/api/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Login/LoginComponent.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Login/LoginComponent.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Login/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Perfil/PerfilComponent.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Perfil/PerfilComponent.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/Perfil/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/RegisterForm/RegisterForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/components/RegisterForm/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/pages/Login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/pages/Perfil.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/src/pages/Register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/private.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/privateRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/.idea.client.dir/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/.idea.client.dir/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../client/.idea/.idea.client.dir/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/User/MenuTop/MenuTop.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/User/MenuTop/MenuTop.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/config/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/config/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/User/UploadImages.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/User/UploadImages.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.server.dir/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.server.dir/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.server.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.server.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Image.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Image.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/06177fcb-6edf-482c-b64b-62e8bad97a13.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/4da5c97e-94da-4b5b-a61e-c2c0f20ad0b2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/58261131-2c29-4024-9f13-32b8a555de0a.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/89a351b7-80d1-4af8-a42f-aface6d59f96.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/c99c392f-43f0-480c-bcc5-38f7ecceefd1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/ImagenRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routers/ImagenRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/db.js" />
-      <option value="$PROJECT_DIR$/index.html" />
-      <option value="$PROJECT_DIR$/package.json" />
-      <option value="$PROJECT_DIR$/server.js" />
-      <option value="$PROJECT_DIR$/public/img/NewFile1.txt" />
-      <option value="$PROJECT_DIR$/public/img/ruta.js" />
-      <option value="$PROJECT_DIR$/models/Image.js" />
-      <option value="$PROJECT_DIR$/public/img/path.js" />
-      <option value="$PROJECT_DIR$/routers/ImagenRoutes.js" />
+      <option value="$PROJECT_DIR$/models/User.js" />
     </changedPaths>
   </component>
-  <component name="ProjectId" id="1pMRCiU7Sv0zfdgoicSqFwpJzBn" />
+  <component name="ProjectId" id="1qGIxUXJjWEFHoWIWCsy7XO04xQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -36,27 +72,31 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3c5e35b6-ac5b-4b79-8c22-7e4ade18bc61" name="Default Changelist" comment="" />
-      <created>1614990856043</created>
+      <changelist id="12fc47e3-7a95-477b-87fd-9c9b36c73b79" name="Default Changelist" comment="" />
+      <created>1616699747927</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1614990856043</updated>
-      <workItem from="1614990861960" duration="7867000" />
-      <workItem from="1615040337698" duration="5157000" />
-      <workItem from="1615321013715" duration="4163000" />
-      <workItem from="1615847660467" duration="9474000" />
-      <workItem from="1616077880187" duration="15935000" />
-      <workItem from="1616162954831" duration="2526000" />
-      <workItem from="1616205408339" duration="902000" />
-      <workItem from="1616540916962" duration="1957000" />
+      <updated>1616699747927</updated>
+      <workItem from="1616699752698" duration="3345000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

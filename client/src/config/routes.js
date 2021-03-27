@@ -7,6 +7,8 @@ import infoImagen from "../pages/User/InfoImagen";
 
 //Other
 import Error404 from "../pages/Error404";
+import Login from "../pages/Login";
+import Perfil from "../pages/Perfil";
 
 const routes = [
     {
@@ -30,10 +32,14 @@ const routes = [
                 component: infoImagen
             },
             {
+                path: "/profile",
+                exact: true,
+                component: Perfil
+            },
+            {
                 component: Error404
             }
         ]
-
     }
 ]
 export default routes
