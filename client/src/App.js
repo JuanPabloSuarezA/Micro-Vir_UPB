@@ -1,8 +1,10 @@
 import './App.css';
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import routes from "./config/routes";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 
 function App() {
@@ -10,10 +12,15 @@ function App() {
         <React.Fragment>
             <Router>
                 <Switch>
+                    <Route path={"/register"} exact={true} component={Register}/>
+                    <Route path={"/login"} exact={true} component={Login}/>
                     {
-                        routes.map((route, index) => (
+                        localStorage.getItem("authToken") ? 
+                            routes.map((route, index) => (
                             <RouteSubRoutes key={index}{...route}/>
                         ))
+                            : <Redirect to={"/login"}/>
+                        
                     }
                 </Switch>
             </Router>

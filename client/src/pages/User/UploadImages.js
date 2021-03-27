@@ -24,8 +24,10 @@ export default function UploadImages() {
             })
         }else{
             const formData = new FormData();
-            formData.append('image', newImage.image)
-            formData.append('title', newImage.title)
+            formData.append('image', newImage.image);
+            formData.append('title', newImage.title);
+            formData.append('Token', localStorage.getItem("authToken"));
+            formData.append('tipo','upload');
 
             axios.post('http://localhost:4000/upload', formData).then(res=>{
                 notification.open({
