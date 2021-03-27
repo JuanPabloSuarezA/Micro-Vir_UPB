@@ -36,7 +36,6 @@ const PrivateRoutes = require('./routers/privateRoutes');
 //Routes
 app.use('/', ImageRoutes);
 app.use('/auth', AuthRoutes);
-app.use('/private', PrivateRoutes);
 
 const PORT = process.env.PORT || 4000;
 
