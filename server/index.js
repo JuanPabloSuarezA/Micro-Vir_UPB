@@ -33,13 +33,14 @@ const storage = multer.diskStorage({
 app.use(multer({ storage }).single("image"));
 
 //Load Routes
-const ImageRoutes = require("./routes/ImagenRoutes");
-const contentRouter = require("./routes/content");
-const uploadRouter = require("./routes/upload");
-const downloadRouter = require("./routes/download");
-const dirRouter = require("./routes/dir");
+const ImageRoutes = require("./routers/ImagenRoutes");
+const contentRouter = require("./routers/content");
+const uploadRouter = require("./routers/upload");
+const downloadRouter = require("./routers/download");
+const dirRouter = require("./routers/dir");
 
-const authRouter = require("./routes/authRoutes");
+const authRouter = require("./routers/authRoutes");
+const videoRouter = require("./routers/video");
 // const PrivateRoutes = require("./routes/privateRoutes");
 
 //Routes
@@ -49,6 +50,7 @@ app.use("/upload", uploadRouter);
 app.use("/download", downloadRouter);
 app.use("/dir", dirRouter);
 app.use("/auth", authRouter);
+app.use("/videos", videoRouter);
 // app.use("/private", PrivateRoutes);
 
 // Errors
