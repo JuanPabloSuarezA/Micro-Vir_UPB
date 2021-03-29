@@ -52,6 +52,11 @@ export default function MenuTop() {
                   <a className="nav-link">Perfil </a>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to={"/videos"} style={{ textDecoration: "none" }}>
+                  <a className="nav-link">Streaming </a>
+                </Link>
+              </li>
             </ul>
             <form className="d-flex">
               <Button onClick={logOut} type="link">

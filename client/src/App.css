@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,6 +27,28 @@
 .App-link {
   color: #61dafb;
 }
+
+.antd-card {
+  width: 240;
+  background-color: transparent;
+  border: 1px solid rgb(0, 72, 131);
+  border-radius: 20px;
+  transition: top ease 0.5s;
+}
+.antd-card:hover {
+  background-color: rgb(223, 241, 255);
+}
+.none {
+  background-color: rgb(0, 72, 131);
+}
+
+.ant-card-body {
+  width: 220px;
+  padding-right: 53px;
+  padding-left: 0px;
+}
+
+@import "~antd/lib/style/index";
 
 @keyframes App-logo-spin {
   from {

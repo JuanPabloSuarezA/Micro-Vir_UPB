@@ -10,6 +10,9 @@ import Error404 from "../pages/Error404";
 import Login from "../pages/Login";
 import Perfil from "../pages/Perfil";
 
+import StreamingHome from "../pages/User/video/StreamingHome";
+import VideoView from "../pages/User/video/VideoView";
+
 const routes = [
   {
     path: "/",
@@ -35,6 +38,16 @@ const routes = [
         path: "/profile",
         exact: true,
         component: Perfil,
+      },
+      {
+        path: "/videos",
+        exact: true,
+        component: StreamingHome,
+      },
+      {
+        path: "/videos/:idVideo",
+        exact: true,
+        component: VideoView,
       },
       {
         component: Error404,
