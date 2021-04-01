@@ -45,9 +45,9 @@ export default class StreamingHome extends Component {
                   height: "100px",
                   width: "200px",
                 }}
-                key={video.id}
+                key={video._id}
               >
-                <Link to={`/videos/${video.id}`}>
+                <Link to={`/videos/${video._id}`}>
                   <Card
                     hoverable
                     className="antd-card"

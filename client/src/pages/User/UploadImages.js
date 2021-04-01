@@ -26,14 +26,21 @@ export default function UploadImages() {
       formData.append("title", newImage.title);
       formData.append("Token", localStorage.getItem("authToken"));
       formData.append("tipo", "upload");
-
+      console.log(newImage.image);
+      console.log();
+      const esImagen = newImage.image.type.includes("image");
       axios
-        .post("http://localhost:4000/upload", formData)
+        .post(
+          esImagen
+            ? "http://localhost:4000/upload"
+            : "http://localhost:4000/videos/upload",
+          formData
+        )
         .then((res) => {
           notification.open({
             icon: <SmileOutlined />,
             message: "Éxito",
-            description: "La imagen fue compartida correctamente",
+            description: "El archivo fue compartido correctamente",
           });
           console.log(res);
         })
@@ -79,7 +86,7 @@ export default function UploadImages() {
             type="submit"
             id="inputGroupFileAddon04"
           >
-            Subir Imagen
+            Subir archivo (imagen o video)
           </button>
         </form>
       </div>

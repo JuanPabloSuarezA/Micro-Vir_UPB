@@ -1,36 +1,72 @@
 const fs = require("fs");
 
-//Modelo para videos
-const videos = [
-  {
-    id: 0,
-    duration: "< 1 min",
-    name: "Juan",
-  },
-  {
-    id: 1,
-    duration: "< 1 min",
-    name: "Diego",
-  },
-  {
-    id: 2,
-    duration: "< 1 min",
-    name: "Mark",
-  },
-];
+const Video = require("../models/Video");
+const jwt = require("jsonwebtoken");
+const path = require("path");
+const { unlink } = require("fs-extra");
+const { imgFolder } = require("../public/img/path");
+const appDir = require("../config");
 
 // Se envia la info de todos los videos al frontend para su previsualizacion
-// app.get("/videos", (req, res) => res.json(videos));
-function PreviewVideos(req, res) {
-  res.json(videos);
-}
-
+const PreviewVideos = async (req, res, next) => {
+  try {
+    const videos = await Video.find();
+    res.json(videos);
+  } catch (err) {
+    console.log(err);
+    next();
+  }
+};
 // Se envia la info de un video especifico a partir de
 //  su ID indicado en los parametros con :
-function MetaVideo(req, res) {
-  const id = parseInt(req.params.idVideo, 10);
-  res.json(videos[id]);
-}
+const MetaVideo = async (req, res, next) => {
+  try {
+    const id = req.params.idVideo;
+    const video = await Video.findById(id);
+    res.json(video);
+  } catch (err) {
+    console.log(err);
+    next();
+  }
+};
+
+//Upload Videos
+const UploadVideo = (req, res) => {
+  if (req.body.tipo === "upload") {
+    const token = req.body.Token;
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    try {
+      const video = new Video();
+      video.author = email.toLowerCase();
+      video.name = req.body.title;
+      video.fileName = req.file.filename;
+      video.originalName = req.file.originalname;
+      video.mimetype = req.file.mimetype;
+      video.size = req.file.size;
+      res.send(true);
+      video.save();
+    } catch (e) {
+      res.send(false);
+    }
+  } else {
+    const token = req.body.Token;
+    const { userName } = jwt.verify(token, process.env.JWT_SECRET);
+    res.json({ userName });
+  }
+};
+//Delete video
+const DeleteVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const videoDeleted = await Video.findByIdAndDelete(id);
+
+    await unlink(path.resolve(imgFolder + `/${videoDeleted.fileName}`));
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
+};
 
 /***************************************************************************************
  *    Title: Video Streaming Application
@@ -43,10 +79,11 @@ function MetaVideo(req, res) {
 
 //Método para enviar chunks o trozos de video en vez de servir el video completo
 
-function StreamVideo(req, res) {
+const StreamVideo = async (req, res, next) => {
   //Se genera la ruta para obtener el video en base al id enviado
   // que indica su nombre
-  const path = `assets/${req.params.id}.mp4`;
+  const video = await Video.findById(req.params.id);
+  const path = `public/img/${video.fileName}`;
   //Se obtiene el estado del video actual
   const stat = fs.statSync(path);
 
@@ -110,10 +147,12 @@ function StreamVideo(req, res) {
     // del parametro range
     fs.createReadStream(path).pipe(res);
   }
-}
+};
 
 module.exports = {
   StreamVideo,
   PreviewVideos,
   MetaVideo,
+  UploadVideo,
+  DeleteVideo,
 };

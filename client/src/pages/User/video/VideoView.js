@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+
+//Antd
+import "antd/lib/notification/style/css";
+import { notification } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 
 export default class VideoView extends Component {
   constructor(props) {
@@ -6,7 +13,9 @@ export default class VideoView extends Component {
     this.state = {
       idVideo: this.props.match.params.idVideo,
       videoInfo: {},
+      videoDelete: false,
     };
+    this.handleDelete = this.handleDelete.bind(this);
   }
   async componentDidMount() {
     try {
@@ -20,6 +29,30 @@ export default class VideoView extends Component {
       console.log(err);
     }
   }
+
+  handleDelete(e) {
+    e.preventDefault();
+    axios
+      .get(`http://localhost:4000/videos/${this.state.idVideo}/delete`, {
+        params: {
+          id: this.state.idVideo,
+        },
+      })
+      .then(async (response) => {
+        notification.open({
+          icon: <SmileOutlined rotate={180} />,
+          message: "Éxito",
+          description: "El video fue eliminado correctamente",
+        });
+        await this.setState({
+          videoDelete: response.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <div className="App">
@@ -36,6 +69,10 @@ export default class VideoView extends Component {
               ></source>
             </video>
             <h6>{this.state.videoInfo.name}</h6>
+            <a className="btn btn-danger" onClick={this.handleDelete}>
+              Delete
+            </a>
+            {this.state.videoDelete ? <Redirect to={"/videos"} /> : null}
           </div>
         </header>
       </div>
