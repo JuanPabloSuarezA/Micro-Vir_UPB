@@ -7,7 +7,7 @@ import "antd/lib/notification/style/css";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
-export default class infoImagen extends React.Component {
+export default class InfoImagen extends React.Component {
   constructor(...props) {
     super(...props);
     this.state = {
@@ -64,7 +64,12 @@ export default class infoImagen extends React.Component {
     return (
       <div className="p-5">
         <div className="card" style={{ width: "18rem" }}>
-          <img src={this.state.image.path} className="card-img-top" alt="..." />
+          <h1>{console.log(this.state.image.fileName)}</h1>
+          <img
+            src={`http://localhost:4000/images/${this.state.image.fileName}`}
+            className="card-img-top"
+            alt="..."
+          />
           <div className="card-body">
             <h5 className="card-title">{this.state.image.title}</h5>
             <a onClick={this.handleDelete} className="btn btn-danger">

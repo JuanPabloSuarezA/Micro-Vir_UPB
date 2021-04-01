@@ -54,7 +54,7 @@ export default class Home extends React.Component {
                   <img
                     alt={image.filename}
                     className="card-img-top"
-                    src={image.path}
+                    src={`http://localhost:4000/images/${image.fileName}`} //{image.path}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{image.title}</h5>

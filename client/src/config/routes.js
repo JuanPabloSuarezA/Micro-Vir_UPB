@@ -3,7 +3,7 @@
 //User pages
 import Home from "../pages/User/Home";
 import UploadImages from "../pages/User/UploadImages";
-import infoImagen from "../pages/User/InfoImagen";
+import InfoImagen from "../pages/User/InfoImagen";
 
 //Other
 import Error404 from "../pages/Error404";
@@ -31,8 +31,8 @@ const routes = [
       },
       {
         path: "/image/:id",
-        exact: false,
-        component: infoImagen,
+        exact: true,
+        component: InfoImagen,
       },
       {
         path: "/profile",

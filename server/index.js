@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const appDir = require("./config");
 
 const cors = require("cors");
 require("dotenv").config({ path: "./.env" });
@@ -12,6 +13,8 @@ require("dotenv").config({ path: "./.env" });
 const enoent = require("./middlewares/enoent");
 const eexist = require("./middlewares/eexist");
 const err = require("./middlewares/err");
+
+const Image = require("./models/Image");
 
 //Init
 const app = express();
@@ -59,9 +62,9 @@ app.use(eexist);
 app.use(err);
 
 //Routes
-app.use("/", ImageRoutes);
 app.use("/auth", authRouter);
 
 const PORT = process.env.PORT || 4000;
+const IP_SERVER = "localhost";
 
 app.listen(PORT, () => console.log(`Server start on port ${PORT}`));

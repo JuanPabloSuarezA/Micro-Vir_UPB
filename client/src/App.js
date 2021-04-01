@@ -19,16 +19,16 @@ function App() {
           <Route path={"/register"} exact={true} component={Register} />
           <Route path={"/login"} exact={true} component={Login} />
           {/* comment for development */}
-          {/* {localStorage.getItem("authToken") ? (
+          {localStorage.getItem("authToken") ? (
             routes.map((route, index) => (
               <RouteSubRoutes key={index} {...route} />
             ))
           ) : (
             <Redirect to={"/login"} />
-          )} */}
-          {routes.map((route, index) => (
+          )}
+          {/* {routes.map((route, index) => (
             <RouteSubRoutes key={index} {...route} />
-          ))}
+          ))} */}
         </Switch>
       </Router>
     </React.Fragment>
