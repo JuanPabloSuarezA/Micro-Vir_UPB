@@ -18,6 +18,9 @@ export default class RegisterForm extends React.Component {
       email: "",
       password: "",
       confirmPassword: "",
+      firstName: "",
+      lastName: "",
+      birthDate: "",
     };
   }
   render() {
@@ -44,6 +47,9 @@ export default class RegisterForm extends React.Component {
           userName: this.state.userName,
           email: this.state.email.toLowerCase(),
           password: this.state.password,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          birthDate: this.state.birthDate,
         };
         try {
           const { data } = await axios.post(
@@ -83,12 +89,49 @@ export default class RegisterForm extends React.Component {
         >
           <Form.Item
             name="username"
-            rules={[{ required: true, message: "Ingresa tu nombre!" }]}
+            rules={[
+              { required: true, message: "Ingresa tu nombre de usuario!" },
+            ]}
           >
             <Input
               name="userName"
               prefix={<SmileOutlined className="site-form-item-icon" />}
               placeholder="Nombre de usuario"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="firstname"
+            rules={[{ required: true, message: "Ingresa tus nombres!" }]}
+          >
+            <Input
+              name="firstName"
+              prefix={<SmileOutlined className="site-form-item-icon" />}
+              placeholder="Nombres"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="lastname"
+            rules={[{ required: true, message: "Ingresa tus apellidos!" }]}
+          >
+            <Input
+              name="lastName"
+              prefix={<SmileOutlined className="site-form-item-icon" />}
+              placeholder="Apellidos"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="birthdate"
+            rules={[
+              { required: true, message: "Ingresa tu fecha de nacimiento!" },
+            ]}
+          >
+            <Input
+              name="birthDate"
+              prefix={<SmileOutlined className="site-form-item-icon" />}
+              placeholder="Fecha de nacimiento"
             />
           </Form.Item>
 
