@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { getAccessToken } from "../../api/auth";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input, notification, DatePicker, Space } from "antd";
 import {
   LockOutlined,
   SmileOutlined,
@@ -33,6 +33,16 @@ export default class RegisterForm extends React.Component {
       this.setState({
         ...this.setState,
         [e.target.name]: e.target.value,
+      });
+      console.log(e.target.value);
+    };
+
+    const dateChange = (date, dateString) => {
+      console.log(dateString);
+
+      this.setState({
+        ...this.setState,
+        birthDate: dateString,
       });
     };
 
@@ -122,17 +132,21 @@ export default class RegisterForm extends React.Component {
             />
           </Form.Item>
 
-          <Form.Item
-            name="birthdate"
-            rules={[
-              { required: true, message: "Ingresa tu fecha de nacimiento!" },
-            ]}
-          >
-            <Input
+          <Form.Item name="birthdate">
+            {/* <Input
               name="birthDate"
               prefix={<SmileOutlined className="site-form-item-icon" />}
               placeholder="Fecha de nacimiento"
-            />
+            /> */}
+            <Space direction="vertical">
+              <DatePicker
+                prefix={<SmileOutlined className="site-form-item-icon" />}
+                name="birthDate"
+                placeholder="Fecha de nacimiento"
+                style={{ width: "350px" }}
+                onChange={dateChange}
+              />
+            </Space>
           </Form.Item>
 
           <Form.Item

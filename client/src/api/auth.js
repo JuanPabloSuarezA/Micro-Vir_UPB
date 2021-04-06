@@ -8,6 +8,5 @@
 }
 
 export function logOutApi() {
-  console.log("AQUI");
   localStorage.removeItem("authToken");
 }
