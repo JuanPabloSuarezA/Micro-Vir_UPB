@@ -64,7 +64,7 @@ export default class InfoImagen extends React.Component {
     return (
       <div className="p-5">
         <div className="card" style={{ width: "18rem" }}>
-          <h1>{console.log(this.state.image.fileName)}</h1>
+          <h1>{console.log(this.state.image)}</h1>
           <img
             src={`http://localhost:4000/images/${this.state.image.fileName}`}
             className="card-img-top"

@@ -13,8 +13,16 @@ const router = Router();
 const Image = require("../models/Image");
 
 //Home
-router.get("/", async (req, res) => {
-  const images = await Image.find();
+router.post("/", async (req, res) => {
+  const token = req.body.token;
+  const { email } = jwt.verify(token, process.env.JWT_SECRET);
+  const images = await Image.find({ author: email }, (error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+  });
   res.send(images);
 });
 

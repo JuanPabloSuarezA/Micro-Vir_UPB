@@ -41,6 +41,7 @@ const contentRouter = require("./routers/content");
 const uploadRouter = require("./routers/upload");
 const downloadRouter = require("./routers/download");
 const dirRouter = require("./routers/dir");
+const userRouter = require("./routers/user");
 
 const authRouter = require("./routers/authRoutes");
 const videoRouter = require("./routers/video");
@@ -54,6 +55,8 @@ app.use("/download", downloadRouter);
 app.use("/dir", dirRouter);
 app.use("/auth", authRouter);
 app.use("/videos", videoRouter);
+
+app.use("/profile", userRouter);
 // app.use("/private", PrivateRoutes);
 
 // Errors

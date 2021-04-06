@@ -12,10 +12,10 @@ export default class Home extends React.Component {
   }
 
   loadData() {
-    axios({
-      method: "get",
-      url: "http://localhost:4000/",
-    })
+    const formData = new FormData();
+    formData.append("token", localStorage.getItem("authToken"));
+    axios
+      .post("http://localhost:4000/", formData)
       .then((res) => {
         this.setState({ images: res.data });
       })

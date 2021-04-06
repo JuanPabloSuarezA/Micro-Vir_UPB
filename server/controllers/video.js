@@ -12,7 +12,16 @@ const { getVideoDurationInSeconds } = require("get-video-duration");
 // Se envia la info de todos los videos al frontend para su previsualizacion
 const PreviewVideos = async (req, res, next) => {
   try {
-    const videos = await Video.find();
+    const token = req.body.token;
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(email);
+    const videos = await Video.find({ author: email }, (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+    });
     res.json(videos);
   } catch (err) {
     console.log(err);

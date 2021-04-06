@@ -11,7 +11,7 @@
   transform: translate(-50%, -50%);
 } */
 
-.container {
+.videosContainer {
   display: flex;
   justify-content: center;
   align-items: center;

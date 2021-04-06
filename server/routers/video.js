@@ -5,7 +5,7 @@ const Video = require("../models/Video");
 
 const router = express.Router();
 
-router.get("/", VideoController.PreviewVideos);
+router.post("/", VideoController.PreviewVideos);
 
 router.get("/:id", VideoController.StreamVideo);
 
