@@ -7,6 +7,7 @@ const videoSchema = new Schema({
   mimeType: String,
   originalName: String,
   duration: String,
+  description: String,
   createdAt: { type: Date, default: Date.now() },
 });
 

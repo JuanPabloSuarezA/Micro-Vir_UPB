@@ -7,6 +7,8 @@ const { unlink } = require("fs-extra");
 const { imgFolder } = require("../public/img/path");
 const appDir = require("../config");
 
+const { getVideoDurationInSeconds } = require("get-video-duration");
+
 // Se envia la info de todos los videos al frontend para su previsualizacion
 const PreviewVideos = async (req, res, next) => {
   try {
@@ -39,12 +41,23 @@ const UploadVideo = (req, res) => {
       const video = new Video();
       video.author = email.toLowerCase();
       video.name = req.body.title;
+      video.description = req.body.description;
       video.fileName = req.file.filename;
       video.originalName = req.file.originalname;
       video.mimetype = req.file.mimetype;
       video.size = req.file.size;
-      res.send(true);
-      video.save();
+
+      getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
+        (duration) => {
+          var date = new Date(0);
+          date.setSeconds(duration);
+          var timeStr = date.toISOString().substr(11, 8);
+          console.log(timeStr);
+          video.duration = timeStr;
+          res.send(true);
+          video.save();
+        }
+      );
     } catch (e) {
       res.send(false);
     }
@@ -93,6 +106,8 @@ const StreamVideo = async (req, res, next) => {
   //Se recibe el parametro range enviado por el navegador
   // para determinar cual trozo de video enviar
   const range = req.headers.range;
+
+  console.log(range);
 
   // Como no todos los navegadores envian el parametro range
   // se manejan los que no lo envian en el bloque else

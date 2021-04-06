@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "fs-extra": "^9.1.0",
+    "get-video-duration": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
     "jwt-node": "^0.1.9",
     "mime-types": "^2.1.29",

@@ -3,6 +3,8 @@ import { Link, Route } from "react-router-dom";
 import { Card } from "antd";
 import vidLogo from "../../../assets/img/vidIcon.png";
 import "../../../App.css";
+import { Container, Row, Col } from "react-bootstrap";
+import "./video.css";
 
 // import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css";
 const { Meta } = Card;
@@ -28,47 +30,81 @@ export default class StreamingHome extends Component {
   }
   render() {
     return (
-      <div className="App App-header">
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div className="row">
-            {this.state.videos.map((video) => (
-              <span
-                style={{
-                  paddingRight: "20px",
-                  height: "100px",
-                  width: "200px",
-                }}
-                key={video._id}
-              >
-                <Link to={`/videos/${video._id}`}>
-                  <Card
-                    hoverable
-                    className="antd-card"
-                    cover={<img src={vidLogo} alt="Not Found" />}
-                    bordered={true}
-                  >
-                    <Meta
-                      title={video.name}
-                      description={video.duration}
-                      style={{
-                        borderTop: "1px solid rgb(0, 72, 131)",
-                        width: "100%",
-                      }}
-                    ></Meta>
-                  </Card>
-                </Link>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+      // <div className="App App-header">
+      //   <div
+      //     className="container"
+      //     style={{
+      //       display: "flex",
+      //       alignItems: "center",
+      //       justifyContent: "center",
+      //     }}
+      //   >
+      //     <div className="row">
+      //       {this.state.videos.map((video) => (
+      //         <span
+      //           style={{
+      //             paddingRight: "20px",
+      //             height: "100px",
+      //             width: "200px",
+      //           }}
+      //           key={video._id}
+      //         >
+      //           <Link to={`/videos/${video._id}`}>
+      //             <Card
+      //               hoverable
+      //               className="antd-card"
+      //               cover={<img src={vidLogo} alt="Not Found" />}
+      //               bordered={true}
+      //             >
+      //               <Meta
+      //                 title={video.name}
+      //                 description={"Duración: " + video.duration}
+      //                 style={{
+      //                   borderTop: "1px solid rgb(0, 72, 131)",
+      //                   width: "100%",
+      //                 }}
+      //               ></Meta>
+      //             </Card>
+      //           </Link>
+      //         </span>
+      //       ))}
+      //     </div>
+      //   </div>
+      // </div>
+
+      <Container>
+        <Row className="justify-content-md-center">
+          {this.state.videos.map((video) => (
+            <Col
+              sm
+              // style={{
+              //   display: "flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              // }}
+            >
+              <Link to={`/videos/${video._id}`}>
+                <Card
+                  hoverable
+                  className="antd-card"
+                  cover={<img src={vidLogo} alt="Not Found" />}
+                  bordered={true}
+                >
+                  <Meta
+                    title={video.name}
+                    description={"Duración: " + video.duration}
+                    style={{
+                      borderTop: "1px solid rgb(0, 72, 131)",
+                      width: "100%",
+                      textAlign: "center",
+                    }}
+                  ></Meta>
+                </Card>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     );
   }
 }

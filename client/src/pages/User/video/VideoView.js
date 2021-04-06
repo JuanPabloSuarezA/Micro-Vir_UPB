@@ -28,6 +28,7 @@ export default class VideoView extends Component {
     } catch (err) {
       console.log(err);
     }
+    console.log(this.state.videoInfo);
   }
 
   handleDelete(e) {
@@ -57,7 +58,7 @@ export default class VideoView extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <div style={{ border: "solid black 1px" }}>
+          <div style={{ alignItems: "center" }}>
             <video
               controls
               autoPlay
@@ -68,7 +69,19 @@ export default class VideoView extends Component {
                 type="video/mp4"
               ></source>
             </video>
-            <h6>{this.state.videoInfo.name}</h6>
+            <div
+              style={{
+                textAlign: "left",
+                border: "solid black 1px",
+                backgroundColor: "rgb(224, 224, 228)",
+              }}
+            >
+              <h6>{"Título: " + this.state.videoInfo.name}</h6>
+              <h6>{"Duración: " + this.state.videoInfo.duration}</h6>
+              <h6>{"Descripción: " + this.state.videoInfo.description}</h6>
+              <h6>{"Autor: " + this.state.videoInfo.author}</h6>
+            </div>
+            <hr></hr>
             <a className="btn btn-danger" onClick={this.handleDelete}>
               Delete
             </a>

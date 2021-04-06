@@ -6,15 +6,22 @@ import "antd/lib/notification/style/css";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
+window.URL = window.URL || window.webkitURL;
+
 export default function UploadImages() {
   const [newImage, setNewImage] = useState({
     title: "",
     image: "",
+    description: "",
   });
 
   const uploadImagenApi = (e) => {
     e.preventDefault();
-    if (newImage.title === "" || newImage.image === "") {
+    if (
+      newImage.title === "" ||
+      newImage.image === "" ||
+      newImage.description === ""
+    ) {
       notification.open({
         icon: <SmileOutlined rotate={180} />,
         message: "Error",
@@ -24,10 +31,11 @@ export default function UploadImages() {
       const formData = new FormData();
       formData.append("image", newImage.image);
       formData.append("title", newImage.title);
+      formData.append("description", newImage.description);
       formData.append("Token", localStorage.getItem("authToken"));
       formData.append("tipo", "upload");
       console.log(newImage.image);
-      console.log();
+
       const esImagen = newImage.image.type.includes("image");
       axios
         .post(
@@ -62,6 +70,12 @@ export default function UploadImages() {
       title: e.target.value,
     });
   };
+  const handleDescription = async (e) => {
+    await setNewImage({
+      ...newImage,
+      description: e.target.value,
+    });
+  };
 
   return (
     <div>
@@ -71,6 +85,14 @@ export default function UploadImages() {
             <label className="form-label">Título</label>
             <input
               onChange={handleTitle}
+              type="text"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Descripción</label>
+            <input
+              onChange={handleDescription}
               type="text"
               className="form-control"
             />

@@ -104,3 +104,6 @@ dist
 
 
 .idea/
+
+#Ignorar archivos cargados
+img/

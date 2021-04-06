@@ -1,0 +1,20 @@
+.prueba {
+  background-color: rgb(224, 224, 228);
+}
+/* .center {
+  margin: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+} */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transform: translate(0%, 50%);
+}

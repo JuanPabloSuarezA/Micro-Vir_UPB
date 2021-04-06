@@ -29,11 +29,13 @@
 }
 
 .antd-card {
-  width: 240;
+  width: 170px;
   background-color: transparent;
   border: 1px solid rgb(0, 72, 131);
   border-radius: 20px;
   transition: top ease 0.5s;
+  align-content: center;
+  align-items: center;
 }
 .antd-card:hover {
   background-color: rgb(223, 241, 255);
@@ -43,9 +45,16 @@
 }
 
 .ant-card-body {
-  width: 220px;
+  align-content: center !important;
+  align-items: center !important;
+  width: 222px;
   padding-right: 53px;
   padding-left: 0px;
+}
+
+.ant-card-meta {
+  align-content: center !important;
+  align-items: center !important;
 }
 
 @import "~antd/lib/style/index";
