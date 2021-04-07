@@ -1,0 +1,22 @@
+.prueba {
+  background-color: rgb(224, 224, 228);
+}
+/* .center {
+  margin: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+} */
+
+.listUsersContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transform: translate(0%, 50%);
+  /* border: 1px solid rgb(0, 72, 131);
+  border-radius: 20px; */
+}

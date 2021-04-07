@@ -1,9 +1,13 @@
 ﻿import LayoutUser from "../layouts/LayoutUser";
+import LayoutAdmin from "../layouts/LayoutAdmin";
 
 //User pages
 import Home from "../pages/User/Home";
 import UploadImages from "../pages/User/UploadImages";
 import InfoImagen from "../pages/User/InfoImagen";
+
+//Admin pages
+import AdminHome from "../pages/Admin/AdminHome";
 
 //Other
 import Error404 from "../pages/Error404";
@@ -14,6 +18,22 @@ import StreamingHome from "../pages/User/video/StreamingHome";
 import VideoView from "../pages/User/video/VideoView";
 
 const routes = [
+  {
+    path: "/admin",
+    component: LayoutAdmin,
+    exact: false,
+
+    routes: [
+      {
+        path: "/admin",
+        component: AdminHome,
+        exact: true,
+      },
+      {
+        component: Error404,
+      },
+    ],
+  },
   {
     path: "/",
     exact: false,
