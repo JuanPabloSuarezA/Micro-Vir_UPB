@@ -2,7 +2,7 @@
 import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-import userLogo from "../../assets/img/defUserLogo.png";
+//import userLogo from "../../assets/img/defUserLogo.png";
 import { Button, Form, Input, notification } from "antd";
 import {
   LockOutlined,
@@ -58,7 +58,7 @@ export default class PerfilComponent extends React.Component {
       return (
         <img
           style={{ width: "150px", height: "150px", alignContent: "center" }}
-          src={userLogo}
+          src={/*userLogo*/ null}
           alt="not found"
         />
       );
