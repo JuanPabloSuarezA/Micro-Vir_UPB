@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Loading from './Loading';
-import Alert from './Alert';
-import api from '../../api/files';
+import React, { Component } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Loading from "./Loading";
+import Alert from "./Alert";
+import ApiFiles from "../../api/files";
 
 class FilesForm extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class FilesForm extends Component {
   }
 
   onChange(e) {
+    console.log(e.target.files);
     this.setState({ files: e.target.files });
   }
 
@@ -27,17 +28,18 @@ class FilesForm extends Component {
   }
 
   async onSubmit(e) {
-    e.preventDefault();
     this.setState({ uploading: true });
     let response = {};
 
     try {
       const data = new FormData();
       for (const file of this.state.files) {
-        data.append('file', file);
+        data.append("file", file);
       }
-      response = await api.uploadFiles(this.props.uploadTo || '', data);
-      this.props.reload();
+      response = await ApiFiles.uploadFiles(
+        encodeURIComponent(this.props.uploadTo) || "",
+        data
+      );
     } catch (e) {
       response = e;
       console.log(e);

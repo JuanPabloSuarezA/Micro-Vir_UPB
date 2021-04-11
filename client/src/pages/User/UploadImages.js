@@ -5,7 +5,6 @@ import axios from "axios";
 import "antd/lib/notification/style/css";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
-import Dir from "../../components/forms/Dir"
 
 window.URL = window.URL || window.webkitURL;
 
@@ -113,7 +112,6 @@ export default function UploadImages() {
           </button>
         </form>
       </div>
-      <Dir path="\"/>
     </div>
   );
 }

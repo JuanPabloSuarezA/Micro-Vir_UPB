@@ -1,10 +1,10 @@
-import axios from 'axios';
-import {basePath} from './cofig'
+import axios from "axios";
+import { fileServer } from "./cofig";
 
-class Api {
+class ApiFiles {
   constructor() {
     this.api = axios.create({
-      baseURL: basePath,
+      baseURL: fileServer,
     });
   }
 
@@ -18,17 +18,24 @@ class Api {
   }
 
   async getContent(path) {
+    path = encodeURIComponent(path);
     return await this.apiCall(() => this.api.get(`/content/${path}`));
   }
 
   async uploadFiles(path, files) {
+    path = encodeURIComponent(path);
     return await this.apiCall(() => this.api.post(`/upload/${path}`, files));
   }
 
   async mkDir(path, name) {
+    path = encodeURIComponent(path);
     return await this.apiCall(() => this.api.post(`/dir/${path}`, { name }));
+  }
+  async download(path) {
+    path = encodeURIComponent(path);
+    return await this.apiCall(() => this.api.get(`/download/${path}`));
   }
 }
 
-const api = new Api();
+const api = new ApiFiles();
 export default api;

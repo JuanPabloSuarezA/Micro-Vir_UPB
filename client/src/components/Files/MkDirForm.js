@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Loading from './Loading';
-import Alert from './Alert';
-import api from '../../api/files';
+import React, { Component } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Loading from "./Loading";
+import Alert from "./Alert";
+import api from "../../api/files";
 
 class MkDirForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', creating: false, showAlert: false, alert: {} };
+    this.state = { name: "", creating: false, showAlert: false, alert: {} };
   }
 
   onChange(e) {
@@ -30,9 +30,9 @@ class MkDirForm extends Component {
     e.preventDefault();
     this.setState({ creating: true });
     let response = {};
-    
+
     try {
-      response = await api.mkDir(this.props.path || '', this.state.name);
+      response = await api.mkDir(this.props.path || "", this.state.name);
       this.props.reload();
     } catch (e) {
       response = e;

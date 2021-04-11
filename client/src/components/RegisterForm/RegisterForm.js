@@ -8,6 +8,7 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { Link, Redirect } from "react-router-dom";
+import ApiFiles from "../../api/files";
 import axios from "axios";
 
 export default class RegisterForm extends React.Component {
@@ -67,6 +68,8 @@ export default class RegisterForm extends React.Component {
             params,
             config
           );
+          await ApiFiles.mkDir("", params.email);
+          localStorage.setItem("mail", params.email);
           localStorage.setItem("authToken", data.token);
           window.location.href = "/";
         } catch (e) {
