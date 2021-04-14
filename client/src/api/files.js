@@ -33,7 +33,7 @@ class ApiFiles {
   }
   async download(path) {
     path = encodeURIComponent(path);
-    return await this.apiCall(() => this.api.get(`/download/${path}`));
+    window.open(`${fileServer}/download/${path}`)
   }
 }
 

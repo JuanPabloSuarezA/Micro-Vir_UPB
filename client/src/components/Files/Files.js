@@ -41,7 +41,20 @@ class Files extends React.Component {
     const newApiPath = this.state.apiPath + "--" + d;
     const newPath = this.state.path + "/" + d;
     await this.LoadData(newApiPath, newPath);
-    console.log(this.state);
+  };
+  handleReturn = async () => {
+    let ApiPathList = this.state.apiPath.split("--");
+    ApiPathList.pop();
+    const newApiPath = ApiPathList.join("--");
+    const PathList = this.state.path.split("/");
+    PathList.pop();
+    const newPath = PathList.join("/");
+    await this.LoadData(newApiPath, newPath);
+  };
+  handleDownload = async (e, f) => {
+    e.preventDefault();
+    const newApiPath = this.state.apiPath + "--" + f;
+    await ApiFiles.download(newApiPath);
   };
   render() {
     return (
@@ -50,6 +63,12 @@ class Files extends React.Component {
         <h3>Path</h3>
         <PathForm path={this.state.path} handlePath={this.handleFormPath} />
         <h3>Carpetas</h3>
+        <button
+          className="btn btn-secondary"
+          onClick={() => this.handleReturn()}
+        >
+          {"Volver"}
+        </button>
         {this.state.directories.map((d, index) => (
           <button
             className="btn btn-primary"
@@ -60,8 +79,14 @@ class Files extends React.Component {
           </button>
         ))}
         <h3>Archivos</h3>
-        {this.state.files.map((d, index) => (
-          <p key={index}>{d}</p>
+        {this.state.files.map((f, index) => (
+          <button
+            className="btn btn-primary"
+            key={index}
+            onClick={(e) => this.handleDownload(e, f)}
+          >
+            {f}
+          </button>
         ))}
         <h3>Crear Carpeta</h3>
         <MkDirForm path={this.state.apiPath} reload={() => this.reload()} />
