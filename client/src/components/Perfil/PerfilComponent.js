@@ -2,11 +2,7 @@
 import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-<<<<<<< HEAD
-// import userLogo from "../../assets/img/deflogo.png";
-=======
 //import userLogo from "../../assets/img/defUserLogo.png";
->>>>>>> 4768760b74b1a1b2284e0546fc6a79be4dc40bb3
 import { Button, Form, Input, notification } from "antd";
 import {
   LockOutlined,
@@ -56,20 +52,6 @@ export default class PerfilComponent extends React.Component {
       }
     };
 
-<<<<<<< HEAD
-    // const defLogo = (logo) => {
-    //   if (logo) {
-    //     return <img src={logo} alt="not found" />;
-    //   }
-    //   return (
-    //     <img
-    //       style={{ width: "150px", height: "150px", alignContent: "center" }}
-    //       src={userLogo}
-    //       alt="not found"
-    //     />
-    //   );
-    // };
-=======
     const defLogo = (logo) => {
       if (logo) {
         return <img src={logo} alt="not found" />;
@@ -82,7 +64,6 @@ export default class PerfilComponent extends React.Component {
         />
       );
     };
->>>>>>> 4768760b74b1a1b2284e0546fc6a79be4dc40bb3
 
     return (
       <Container className="perfil">
