@@ -2,7 +2,7 @@
 import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-import userLogo from "../../assets/img/defUserLogo.png";
+// import userLogo from "../../assets/img/deflogo.png";
 import { Button, Form, Input, notification } from "antd";
 import {
   LockOutlined,
@@ -17,7 +17,7 @@ export default class PerfilComponent extends React.Component {
     super();
     this.state = {
       user: "",
-      userName: "",
+      maxShare: ""
     };
   }
   LoadData() {
@@ -29,9 +29,10 @@ export default class PerfilComponent extends React.Component {
       .post("http://localhost:4000/profile", formData)
       .then((res) => {
         this.setState({
-          user: res.data[0],
+          user: res.data.user,
+          maxShare: (res.data.maxShare).toFixed(2)
         });
-        console.log(res.data[0]);
+        console.log(this.state);
       })
       .catch((err) => {
         console.log(err);
@@ -51,24 +52,24 @@ export default class PerfilComponent extends React.Component {
       }
     };
 
-    const defLogo = (logo) => {
-      if (logo) {
-        return <img src={logo} alt="not found" />;
-      }
-      return (
-        <img
-          style={{ width: "150px", height: "150px", alignContent: "center" }}
-          src={userLogo}
-          alt="not found"
-        />
-      );
-    };
+    // const defLogo = (logo) => {
+    //   if (logo) {
+    //     return <img src={logo} alt="not found" />;
+    //   }
+    //   return (
+    //     <img
+    //       style={{ width: "150px", height: "150px", alignContent: "center" }}
+    //       src={userLogo}
+    //       alt="not found"
+    //     />
+    //   );
+    // };
 
     return (
       <Container className="perfil">
         <Row className="justify-content-md-center">
           <Col>
-            {defLogo(this.state.user.logo)}
+            {/*{defLogo(this.state.user.logo)}*/}
             <h3>
               <a>{this.state.user.userName}</a>
             </h3>
@@ -92,6 +93,15 @@ export default class PerfilComponent extends React.Component {
               <strong>Fecha de nacimiento </strong>
               <br></br>
               {this.state.user.birthDate}
+            </p>
+            <p>
+              <strong>Cuota máxima</strong>
+              <br></br>
+              {
+                this.state.maxShare >= 0 ? 
+                  `Te quedan ${this.state.maxShare} Gb de espacio disponible.`: 
+                  `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`
+              } 
             </p>
 
             <p>

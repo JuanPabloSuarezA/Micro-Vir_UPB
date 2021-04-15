@@ -193,7 +193,6 @@ export default class RegisterForm extends React.Component {
             >
               Registrarse
             </Button>
-            ¿Ya tienes una cuenta?. <Link to={"/login"}>Ingresa ahora!</Link>
           </Form.Item>
         </Form>
       </div>

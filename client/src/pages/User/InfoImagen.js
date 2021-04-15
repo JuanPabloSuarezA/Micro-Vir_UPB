@@ -41,6 +41,8 @@ export default class InfoImagen extends React.Component {
     axios
       .get(`http://localhost:4000/image/${this.props.match.params.id}/delete`, {
         params: {
+          Token: localStorage.getItem("authToken"),
+          imageSize: this.state.image.size,
           id: this.props.match.params.id,
         },
       })

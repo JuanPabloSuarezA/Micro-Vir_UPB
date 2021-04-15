@@ -8,6 +8,7 @@ const videoSchema = new Schema({
   originalName: String,
   duration: String,
   description: String,
+  size: Number,
   createdAt: { type: Date, default: Date.now() },
 });
 

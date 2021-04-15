@@ -1,5 +1,6 @@
 ﻿const { Router } = require("express");
 const jwt = require("jsonwebtoken");
+const User = require('../models/User')
 
 const path = require("path");
 const { unlink } = require("fs-extra");
@@ -49,6 +50,18 @@ router.get("/images/:id", (req, res) => {
 router.get("/image/:id/delete", async (req, res) => {
   try {
     const { id } = req.params;
+    //Extraigo los params
+    const {imageSize, Token} = req.query;
+    //Decodifico el token para obtener el email y saber qué usuario está logeado
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+    //Hago una consulta a mongo para saber el maxShare actual de dicho usuario
+    const {maxShare} = await User.findOne({email: email});
+    //Ahora opero los tamaños para hallar el nuevo al borrar la imagen
+    const newSize = (Number(maxShare)+ Number(imageSize));
+    //Se hace una consulta a mongo y actualizamos la cuota máxima (maxShare)
+    await User.findOneAndUpdate({email: email}, {$set:{
+        maxShare: newSize
+      }});
     const imageDeleted = await Image.findByIdAndDelete(id);
     await unlink(path.resolve(imgFolder + `/${imageDeleted.fileName}`));
     res.send(true);
@@ -58,24 +71,35 @@ router.get("/image/:id/delete", async (req, res) => {
 });
 
 //Upload Image
-router.post("/upload", (req, res) => {
+router.post("/upload", async (req, res) => {
   if (req.body.tipo === "upload") {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    try {
-      const image = new Image();
-      image.author = email.toLowerCase();
-      image.title = req.body.title;
-      image.fileName = req.file.filename;
-      image.path = "http://192.168.100.38:8080/" + req.file.filename;
-      image.originalName = req.file.originalname;
-      image.mimetype = req.file.mimetype;
-      image.size = req.file.size;
-      res.send(true);
-      image.save();
-    } catch (e) {
-      res.send(false);
+    const imageSize = (req.file.size)*(9.31*10**-10);
+    const {maxShare} = await User.findOne({email: email});
+    const newSize = maxShare - imageSize;
+    if (newSize < 0){
+      res.send(false)
+    }else {
+      try {
+        const image = new Image();
+        image.author = email.toLowerCase();
+        image.title = req.body.title;
+        image.fileName = req.file.filename;
+        image.path = "http://192.168.100.38:8080/" + req.file.filename;
+        image.originalName = req.file.originalname;
+        image.mimetype = req.file.mimetype;
+        image.size = imageSize;
+        await image.save();
+        await User.findOneAndUpdate({email: email}, {$set:{
+            maxShare: newSize
+          }});
+        res.send(true);
+      } catch (e) {
+        res.send(false);
+      }
     }
+    
   } else {
     const token = req.body.Token;
     const { userName } = jwt.verify(token, process.env.JWT_SECRET);

@@ -26,6 +26,8 @@ const UserSchema = new mongoose.Schema({
   lastName: String,
   birthDate: String,
   access: Number,
+  //Cuota máxima
+  maxShare: Number,
 });
 
 UserSchema.pre("save", async function (next) {
@@ -43,7 +45,8 @@ UserSchema.methods.matchPasswords = async function (password) {
 
 UserSchema.methods.getSignedToken = function () {
   return jwt.sign(
-    { id: this._id, email: this.email, userName: this.userName },
+    { id: this._id, email: this.email, userName: this.userName, maxShare: this.maxShare,
+      firstName: this.firstName, lastName: this.lastName, birthDate: this.birthDate},
     process.env.JWT_SECRET
   );
 };

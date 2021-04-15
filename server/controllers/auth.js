@@ -11,6 +11,7 @@ exports.register = async (req, res, next) => {
     birthDate,
   } = req.body;
   const access = 1;
+  const maxShare = 1;
 
   try {
     const user = await User.create({
@@ -21,6 +22,7 @@ exports.register = async (req, res, next) => {
       lastName,
       birthDate,
       access,
+      maxShare
     });
 
     console.log(user);

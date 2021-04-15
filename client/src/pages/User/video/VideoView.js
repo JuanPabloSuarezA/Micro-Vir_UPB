@@ -12,7 +12,8 @@ export default class VideoView extends Component {
     super(props);
     this.state = {
       idVideo: this.props.match.params.idVideo,
-      videoInfo: {},
+      videoInfo: "",
+      sizeVideo: "",
       videoDelete: false,
     };
     this.handleDelete = this.handleDelete.bind(this);
@@ -24,7 +25,7 @@ export default class VideoView extends Component {
       ).then((response) => {
         return response.json();
       });
-      this.setState({ videoInfo: res });
+      this.setState({ videoInfo: res, sizeVideo: res.size });
     } catch (err) {
       console.log(err);
     }
@@ -36,6 +37,8 @@ export default class VideoView extends Component {
     axios
       .get(`http://localhost:4000/videos/${this.state.idVideo}/delete`, {
         params: {
+          Token: localStorage.getItem("authToken"),
+          sizeVideo:this.state.sizeVideo,
           id: this.state.idVideo,
         },
       })

@@ -11,16 +11,12 @@ const User = require("../models/User");
 
 router.post("/", async (req, res) => {
   const token = req.body.Token;
-  console.log(token);
-  const { email } = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.find({ email: email }, (error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-    }
-  });
-  res.send(user);
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  const {email} = user;
+  const {maxShare} = await User.findOne({ email: email });
+  // user.maxShare.push('3');
+  console.log(user);
+  res.send({user: user, maxShare: maxShare});
 });
 
 router.post("/usersList", async (req, res) => {

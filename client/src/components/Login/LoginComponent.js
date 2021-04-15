@@ -6,7 +6,7 @@ import 'antd/dist/antd.css'
 import { Form, Input, Button, notification } from 'antd';
 import {UserOutlined, LockOutlined, SmileOutlined} from '@ant-design/icons';
 import axios from "axios";
-import {Redirect, Link} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 
 export default class LoginComponent extends React.Component{
@@ -80,8 +80,6 @@ export default class LoginComponent extends React.Component{
                         <Button style={{width: "100%"}} type="primary" htmlType="submit" className="login-form-button">
                             Ingresar
                         </Button>
-                        
-                        O <Link to={"/register"}>registrate ahora!</Link>
                     </Form.Item>
                 </Form>
         )

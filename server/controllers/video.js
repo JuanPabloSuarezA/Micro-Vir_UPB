@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const Video = require("../models/Video");
+const User = require("../models/User")
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const { unlink } = require("fs-extra");
@@ -42,33 +43,43 @@ const MetaVideo = async (req, res, next) => {
 };
 
 //Upload Videos
-const UploadVideo = (req, res) => {
+const UploadVideo = async (req, res) => {
   if (req.body.tipo === "upload") {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    try {
-      const video = new Video();
-      video.author = email.toLowerCase();
-      video.name = req.body.title;
-      video.description = req.body.description;
-      video.fileName = req.file.filename;
-      video.originalName = req.file.originalname;
-      video.mimetype = req.file.mimetype;
-      video.size = req.file.size;
-
-      getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
-        (duration) => {
-          var date = new Date(0);
-          date.setSeconds(duration);
-          var timeStr = date.toISOString().substr(11, 8);
-          console.log(timeStr);
-          video.duration = timeStr;
-          res.send(true);
-          video.save();
-        }
-      );
-    } catch (e) {
+    const videoSize = (req.file.size)*(9.31*10**-10);
+    const {maxShare} = await User.findOne({email: email});
+    const newSize = maxShare - videoSize;
+    if (newSize < 0){
       res.send(false);
+    }else{
+      try {
+        console.log(newSize);
+        const video = new Video();
+        video.author = email.toLowerCase();
+        video.name = req.body.title;
+        video.description = req.body.description;
+        video.fileName = req.file.filename;
+        video.originalName = req.file.originalname;
+        video.mimetype = req.file.mimetype;
+        video.size = videoSize;
+        getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
+            async (duration) => {
+              var date = new Date(0);
+              date.setSeconds(duration);
+              var timeStr = date.toISOString().substr(11, 8);
+              console.log(timeStr);
+              video.duration = timeStr;
+              res.send(true);
+              await User.findOneAndUpdate({email: email}, {$set:{
+                  maxShare: newSize
+                }});
+              await video.save();
+            }
+        );
+      } catch (e) {
+        res.send(false);
+      }
     }
   } else {
     const token = req.body.Token;
@@ -80,7 +91,14 @@ const UploadVideo = (req, res) => {
 const DeleteVideo = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+    const {Token, sizeVideo} = req.query;
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+    const {maxShare} = await User.findOne({email: email});
+    // const videoSize = sizeVideo;
+    const newSize = (Number(maxShare)+ Number(sizeVideo));
+    await User.findOneAndUpdate({email: email}, {$set:{
+        maxShare: newSize
+      }});
     const videoDeleted = await Video.findByIdAndDelete(id);
 
     await unlink(path.resolve(imgFolder + `/${videoDeleted.fileName}`));

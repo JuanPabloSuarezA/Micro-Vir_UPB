@@ -57,7 +57,6 @@ app.use("/auth", authRouter);
 app.use("/videos", videoRouter);
 
 app.use("/profile", userRouter);
-// app.use("/private", PrivateRoutes);
 
 // Errors
 app.use(enoent);
