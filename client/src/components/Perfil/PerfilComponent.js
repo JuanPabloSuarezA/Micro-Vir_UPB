@@ -2,7 +2,7 @@
 import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-//import userLogo from "../../assets/img/defUserLogo.png";
+import userLogo from "../../assets/icons/userLogo.png";
 import { Button, Form, Input, notification } from "antd";
 import {
   LockOutlined,
@@ -59,7 +59,7 @@ export default class PerfilComponent extends React.Component {
       return (
         <img
           style={{ width: "150px", height: "150px", alignContent: "center" }}
-          src={/*userLogo*/ null}
+          src={userLogo}
           alt="not found"
         />
       );
@@ -69,7 +69,7 @@ export default class PerfilComponent extends React.Component {
       <Container className="perfil">
         <Row className="justify-content-md-center">
           <Col>
-            {/*{defLogo(this.state.user.logo)}*/}
+            {defLogo(this.state.user.logo)}
             <h3>
               <a>{this.state.user.userName}</a>
             </h3>

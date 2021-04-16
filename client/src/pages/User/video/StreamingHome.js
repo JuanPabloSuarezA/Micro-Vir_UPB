@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
 import { Card } from "antd";
-import vidLogo from "../../../assets/img/vidIcon.png";
+import vidLogo from "../../../assets/icons/vidIcon.png";
 import "../../../App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import "./video.css";
