@@ -4,6 +4,7 @@ import FilesForm from "./FilesForm";
 import MkDir from "./MkDir";
 import MkDirForm from "./MkDirForm";
 import PathForm from "./PathForm";
+import { Container, Row, Col } from "react-bootstrap";
 
 class Files extends React.Component {
   constructor(props) {
@@ -58,41 +59,43 @@ class Files extends React.Component {
   };
   render() {
     return (
-      <div className="container">
-        <h1 className="mr-1">Archivos</h1>
-        <h3>Path</h3>
-        <PathForm path={this.state.path} handlePath={this.handleFormPath} />
-        <h3>Carpetas</h3>
-        <button
-          className="btn btn-secondary"
-          onClick={() => this.handleReturn()}
-        >
-          {"Volver"}
-        </button>
-        {this.state.directories.map((d, index) => (
+      <Container style={{ paddingLeft: "100px" }}>
+        <Row className="justify-content-md-center">
+          <h1 className="mr-1">Archivos</h1>
+          <h3>Path</h3>
+          <PathForm path={this.state.path} handlePath={this.handleFormPath} />
+          <h3>Carpetas</h3>
           <button
-            className="btn btn-primary"
-            key={index}
-            onClick={() => this.handleAddPath(d)}
+            className="btn btn-secondary"
+            onClick={() => this.handleReturn()}
           >
-            {d}
+            {"Volver"}
           </button>
-        ))}
-        <h3>Archivos</h3>
-        {this.state.files.map((f, index) => (
-          <button
-            className="btn btn-primary"
-            key={index}
-            onClick={(e) => this.handleDownload(e, f)}
-          >
-            {f}
-          </button>
-        ))}
-        <h3>Crear Carpeta</h3>
-        <MkDirForm path={this.state.apiPath} reload={() => this.reload()} />
-        <h3>Subir Archivo</h3>
-        <FilesForm uploadTo={this.state.apiPath} />
-      </div>
+          {this.state.directories.map((d, index) => (
+            <button
+              className="btn btn-primary"
+              key={index}
+              onClick={() => this.handleAddPath(d)}
+            >
+              {d}
+            </button>
+          ))}
+          <h3>Archivos</h3>
+          {this.state.files.map((f, index) => (
+            <button
+              className="btn btn-primary"
+              key={index}
+              onClick={(e) => this.handleDownload(e, f)}
+            >
+              {f}
+            </button>
+          ))}
+          <h3>Crear Carpeta</h3>
+          <MkDirForm path={this.state.apiPath} reload={() => this.reload()} />
+          <h3>Subir Archivo</h3>
+          <FilesForm uploadTo={this.state.apiPath} />
+        </Row>
+      </Container>
     );
   }
 }

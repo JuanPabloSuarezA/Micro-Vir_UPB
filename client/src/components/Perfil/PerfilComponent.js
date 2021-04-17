@@ -2,7 +2,7 @@
 import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-//import userLogo from "../../assets/img/defUserLogo.png";
+import userLogo from "../../assets/icons/userLogo.png";
 import { Button, Form, Input, notification } from "antd";
 import {
   LockOutlined,
@@ -17,7 +17,7 @@ export default class PerfilComponent extends React.Component {
     super();
     this.state = {
       user: "",
-      maxShare: ""
+      maxShare: "",
     };
   }
   LoadData() {
@@ -29,8 +29,8 @@ export default class PerfilComponent extends React.Component {
       .post("http://localhost:4000/profile", formData)
       .then((res) => {
         this.setState({
-          user: res.data.user,
-          maxShare: (res.data.maxShare).toFixed(2)
+          user: res.data.usuario,
+          maxShare: res.data.maxShare.toFixed(2),
         });
         console.log(this.state);
       })
@@ -59,7 +59,7 @@ export default class PerfilComponent extends React.Component {
       return (
         <img
           style={{ width: "150px", height: "150px", alignContent: "center" }}
-          src={/*userLogo*/ null}
+          src={userLogo}
           alt="not found"
         />
       );
@@ -69,7 +69,7 @@ export default class PerfilComponent extends React.Component {
       <Container className="perfil">
         <Row className="justify-content-md-center">
           <Col>
-            {/*{defLogo(this.state.user.logo)}*/}
+            {defLogo(this.state.user.logo)}
             <h3>
               <a>{this.state.user.userName}</a>
             </h3>
@@ -97,11 +97,9 @@ export default class PerfilComponent extends React.Component {
             <p>
               <strong>Cuota máxima</strong>
               <br></br>
-              {
-                this.state.maxShare >= 0 ? 
-                  `Te quedan ${this.state.maxShare} Gb de espacio disponible.`: 
-                  `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`
-              } 
+              {this.state.maxShare >= 0
+                ? `Te quedan ${this.state.maxShare} Gb de espacio disponible.`
+                : `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`}
             </p>
 
             <p>

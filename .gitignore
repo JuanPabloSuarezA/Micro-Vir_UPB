@@ -107,3 +107,5 @@ dist
 
 #Ignorar archivos cargados
 img/
+
+package-lock.json 
