@@ -12,13 +12,13 @@
 } */
 
 .videosContainer {
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*align-items: center;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   top: 8rem;
 }
-.svgNoVideos{
+.svgNoVideos {
   margin: 0;
   width: 25rem;
   height: 25rem;
@@ -26,7 +26,7 @@
   left: 20rem;
   top: -4rem;
 }
-.h1NoVideos{
+.h1NoVideos {
   display: inline-block;
   margin: 0;
   position: relative;

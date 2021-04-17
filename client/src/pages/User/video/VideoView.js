@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-
 //Antd
 import "antd/lib/notification/style/css";
-import { Popconfirm, message, Button, notification } from "antd";
+import { Popconfirm, message, Button, notification, Space, Modal } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class VideoView extends Component {
@@ -15,8 +14,10 @@ export default class VideoView extends Component {
       videoInfo: "",
       sizeVideo: "",
       videoDelete: false,
+      visible: false,
     };
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
   async componentDidMount() {
     try {
@@ -57,6 +58,51 @@ export default class VideoView extends Component {
       });
   }
 
+  handleUpdate(e) {
+    e.preventDefault();
+    axios
+      .get(`http://localhost:4000/videos/${this.state.idVideo}/update`, {
+        params: {
+          Token: localStorage.getItem("authToken"),
+          title: this.state.videoInfo.name,
+          description: "actualizado", //this.state.image.description,
+          fileName: this.state.videoInfo.fileName,
+          id: this.props.match.params.id,
+        },
+      })
+      .then(async (response) => {
+        notification.open({
+          icon: <SmileOutlined rotate={180} />,
+          message: "Éxito",
+          description: "Los datos del video fueron actualizados correctamente",
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -87,14 +133,33 @@ export default class VideoView extends Component {
             </div>
             <hr></hr>
 
-            <Popconfirm
-              title="Confirma si deseas eliminar"
-              onConfirm={this.handleDelete}
-              okText="Sí"
-              cancelText="No"
+            <Space size="middle">
+              <Button type="primary" onClick={this.showModal}>
+                Editar
+              </Button>
+
+              <Popconfirm
+                title="Confirma si deseas eliminar"
+                onConfirm={this.handleDelete}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+            </Space>
+
+            <Modal
+              title="Editar video"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              okButtonProps={{ disabled: false }}
+              cancelButtonProps={{ disabled: false }}
             >
-              <a className="btn btn-danger">Delete</a>
-            </Popconfirm>
+              <p>Eeeee</p>
+            </Modal>
 
             {this.state.videoDelete ? <Redirect to={"/videos"} /> : null}
           </div>

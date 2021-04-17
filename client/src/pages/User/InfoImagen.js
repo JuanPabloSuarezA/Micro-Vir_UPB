@@ -4,7 +4,7 @@ import axios from "axios";
 
 //Antd
 import "antd/lib/notification/style/css";
-import { Popconfirm, message, Button, notification } from "antd";
+import { Popconfirm, message, Button, notification, Space, Modal } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class InfoImagen extends React.Component {
@@ -13,8 +13,10 @@ export default class InfoImagen extends React.Component {
     this.state = {
       image: "",
       imageDelete: false,
+      visible: false,
     };
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
   loadImage() {
     axios
@@ -62,6 +64,52 @@ export default class InfoImagen extends React.Component {
       });
   }
 
+  handleUpdate(e) {
+    e.preventDefault();
+    axios
+      .get(`http://localhost:4000/image/${this.props.match.params.id}/update`, {
+        params: {
+          Token: localStorage.getItem("authToken"),
+          title: this.state.image.title,
+          description: "actualizado", //this.state.image.description,
+          fileName: this.state.image.fileName,
+          id: this.props.match.params.id,
+        },
+      })
+      .then(async (response) => {
+        notification.open({
+          icon: <SmileOutlined rotate={180} />,
+          message: "Éxito",
+          description:
+            "Los datos de la imagen fueron actualizados correctamente",
+        });
+        this.loadImage();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
     return (
       <div style={{ paddingLeft: "100px" }}>
@@ -73,16 +121,39 @@ export default class InfoImagen extends React.Component {
             alt="..."
           />
           <div className="card-body">
-            <h5 className="card-title">{this.state.image.title}</h5>
+            <h5 className="card-title">
+              {"Título: " + this.state.image.title}
+            </h5>
+            <h6>{"Descripción: " + this.state.image.description}</h6>
+            <h6>{"Autor: " + this.state.image.author}</h6>
 
-            <Popconfirm
-              title="Confirma si deseas eliminar"
-              onConfirm={this.handleDelete}
-              okText="Sí"
-              cancelText="No"
+            <Space size="middle">
+              <Button type="primary" onClick={this.showModal}>
+                Editar
+              </Button>
+
+              <Popconfirm
+                title="Confirma si deseas eliminar"
+                onConfirm={this.handleDelete}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+            </Space>
+
+            <Modal
+              title="Editar video"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              okButtonProps={{ disabled: false }}
+              cancelButtonProps={{ disabled: false }}
             >
-              <a className="btn btn-danger">Delete</a>
-            </Popconfirm>
+              <p>Eeeee</p>
+            </Modal>
           </div>
           {this.state.imageDelete ? <Redirect to={"/"} /> : null}
         </div>
