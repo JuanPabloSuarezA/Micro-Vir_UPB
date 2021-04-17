@@ -5,6 +5,7 @@ import axios from "axios";
 import "antd/lib/notification/style/css";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
+import { Container, Row, Col } from "react-bootstrap";
 
 window.URL = window.URL || window.webkitURL;
 
@@ -15,8 +16,8 @@ export default class UploadImages extends React.Component {
       title: "",
       image: "",
       description: "",
-      maxShare: ""
-    }
+      maxShare: "",
+    };
   }
   LoadData() {
     const formData = new FormData();
@@ -24,17 +25,17 @@ export default class UploadImages extends React.Component {
     formData.append("tipo", "profile");
 
     axios
-        .post("http://localhost:4000/profile", formData)
-        .then((res) => {
-          this.setState({
-            ...this.state,
-            maxShare: res.data.maxShare
-          });
-          console.log(this.state);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post("http://localhost:4000/profile", formData)
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          maxShare: res.data.maxShare,
         });
+        console.log(this.state);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   componentDidMount() {
     this.LoadData();
@@ -56,11 +57,12 @@ export default class UploadImages extends React.Component {
           message: "Error",
           description: "Debes diligenciar los campos",
         });
-      }else if(this.state.maxShare <= 0){
+      } else if (this.state.maxShare <= 0) {
         notification.open({
           icon: <SmileOutlined rotate={180} />,
           message: "Error",
-          description: "El archivo no se ha cargado. Revisa tu cuota disponible",
+          description:
+            "El archivo no se ha cargado. Revisa tu cuota disponible",
         });
       } else {
         const formData = new FormData();
@@ -70,7 +72,7 @@ export default class UploadImages extends React.Component {
         formData.append("Token", localStorage.getItem("authToken"));
         formData.append("tipo", "upload");
         console.log(this.state.image);
-  
+
         const esImagen = this.state.image.type.includes("image");
         axios
           .post(
@@ -80,7 +82,7 @@ export default class UploadImages extends React.Component {
             formData
           )
           .then((res) => {
-            if (res.data){
+            if (res.data) {
               notification.open({
                 icon: <SmileOutlined />,
                 message: "Éxito",
@@ -88,21 +90,21 @@ export default class UploadImages extends React.Component {
               });
               this.LoadData();
               console.log(res);
-            }else{
+            } else {
               notification.open({
                 icon: <SmileOutlined rotate={180} />,
                 message: "Error",
-                description: "El archivo no se ha cargado. Revisa tu cuota disponible o ha ocurrido un error",
+                description:
+                  "El archivo no se ha cargado. Revisa tu cuota disponible o ha ocurrido un error",
               });
             }
-            
           })
           .catch((err) => {
             console.log(err);
           });
       }
     };
-  
+
     const handleImage = (e) => {
       this.setState({
         ...this.state,
@@ -114,7 +116,7 @@ export default class UploadImages extends React.Component {
         ...this.state,
         title: e.target.value,
       });
-      console.log(this.state.maxShare)
+      console.log(this.state.maxShare);
     };
     const handleDescription = async (e) => {
       await this.setState({
@@ -122,43 +124,45 @@ export default class UploadImages extends React.Component {
         description: e.target.value,
       });
     };
-    return(
-        <div>
-                <div style={{ marginTop: 95, marginLeft: 500 }} className="input-group">
-                  <form onSubmit={uploadImagenApi} encType="multipart/form-data">
-                    <div className="mb-3">
-                      <label className="form-label">Título</label>
-                       <input
-                        onChange={handleTitle}
-                        type="text"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Descripción</label>
-                      <input
-                        onChange={handleDescription}
-                        type="text"
-                        className="form-control"
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      onChange={handleImage}
-                      name="image"
-                      className="form-control mb-3"
-                    />
-                    <button
-                      className="btn btn-outline-success"
-                      type="submit"
-                      id="inputGroupFileAddon04"
-                    >
-                      Subir archivo (imagen o video)
-                    </button>
-                  </form>
-                </div>
+    return (
+      <Container className="videosContainer">
+        <Row className="justify-content-md-center">
+          <div className="input-group" style={{ alignItems: "center" }}>
+            <form onSubmit={uploadImagenApi} encType="multipart/form-data">
+              <div className="mb-3">
+                <label className="form-label">Título</label>
+                <input
+                  onChange={handleTitle}
+                  type="text"
+                  className="form-control"
+                />
               </div>
-    )
+              <div className="mb-3">
+                <label className="form-label">Descripción</label>
+                <input
+                  onChange={handleDescription}
+                  type="text"
+                  className="form-control"
+                />
+              </div>
+              <input
+                type="file"
+                onChange={handleImage}
+                name="image"
+                className="form-control mb-3"
+              />
+              <button
+                className="btn btn-outline-success"
+                type="submit"
+                id="inputGroupFileAddon04"
+              >
+                Subir archivo (imagen o video)
+              </button>
+            </form>
+          </div>
+        </Row>
+      </Container>
+    );
   }
 }
 

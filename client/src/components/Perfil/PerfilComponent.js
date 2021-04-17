@@ -17,7 +17,7 @@ export default class PerfilComponent extends React.Component {
     super();
     this.state = {
       user: "",
-      maxShare: ""
+      maxShare: "",
     };
   }
   LoadData() {
@@ -29,8 +29,8 @@ export default class PerfilComponent extends React.Component {
       .post("http://localhost:4000/profile", formData)
       .then((res) => {
         this.setState({
-          user: res.data.user,
-          maxShare: (res.data.maxShare).toFixed(2)
+          user: res.data.usuario,
+          maxShare: res.data.maxShare.toFixed(2),
         });
         console.log(this.state);
       })
@@ -97,11 +97,9 @@ export default class PerfilComponent extends React.Component {
             <p>
               <strong>Cuota máxima</strong>
               <br></br>
-              {
-                this.state.maxShare >= 0 ? 
-                  `Te quedan ${this.state.maxShare} Gb de espacio disponible.`: 
-                  `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`
-              } 
+              {this.state.maxShare >= 0
+                ? `Te quedan ${this.state.maxShare} Gb de espacio disponible.`
+                : `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`}
             </p>
 
             <p>

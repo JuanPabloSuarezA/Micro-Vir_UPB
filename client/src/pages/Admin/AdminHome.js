@@ -27,8 +27,9 @@ export default class AdminHome extends React.Component {
       .post("http://localhost:4000/profile", formData)
       .then((res) => {
         this.setState({
-          user: res.data[0],
+          user: res.data.usuario,
         });
+        console.log(res.data.usuario);
       })
       .catch((err) => {
         console.log(err);

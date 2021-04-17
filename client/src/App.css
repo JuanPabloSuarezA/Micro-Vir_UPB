@@ -27,7 +27,9 @@
 .App-link {
   color: #61dafb;
 }
-
+.ant-layout {
+  background-color: white;
+}
 .antd-card {
   width: 170px;
   background-color: transparent;
@@ -39,9 +41,6 @@
 }
 .antd-card:hover {
   background-color: rgb(223, 241, 255);
-}
-.none {
-  background-color: rgb(0, 72, 131);
 }
 
 .ant-card-body {

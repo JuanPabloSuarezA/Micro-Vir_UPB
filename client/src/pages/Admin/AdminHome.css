@@ -1,5 +1,5 @@
 .prueba {
-  background-color: rgb(224, 224, 228);
+  /* background-color: rgb(224, 224, 228); */
 }
 /* .center {
   margin: 0;
@@ -19,4 +19,8 @@
   transform: translate(0%, 50%);
   /* border: 1px solid rgb(0, 72, 131);
   border-radius: 20px; */
+}
+
+.ant-spin-container {
+  padding-left: 90px;
 }

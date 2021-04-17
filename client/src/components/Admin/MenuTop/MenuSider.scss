@@ -1,0 +1,33 @@
+.client-sider {
+  margin-top: 50px;
+  position: fixed;
+  left: 0;
+  top: 60 px;
+  height: 100vh;
+  overflow: auto;
+}
+
+.ant-menu-dark :hover {
+  background-color: #1890ff !important;
+}
+
+.ant-menu-item {
+  &-selected {
+    &:hover {
+      background-color: #1890ff !important;
+    }
+  }
+}
+.client-sider_title {
+  a {
+    &:hover {
+      background-color: transparent !important;
+    }
+  }
+}
+
+.anticon {
+  svg {
+    margin-bottom: 5px;
+  }
+}
