@@ -1,7 +1,7 @@
-[![GitHub license](https://img.shields.io/github/license/099duvian/micro-vir)](https://github.com/099duvian/micro-vir/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/JuanPabloSuarezA/Micro-Vir_UPB)](https://github.com/JuanPabloSuarezA/Micro-Vir_UPB/blob/main/LICENSE)
 ![Spiget Download Size](https://img.shields.io/spiget/download-size/2.36%20gb?style=plastic)
-[![GitHub issues](https://img.shields.io/github/issues/099duvian/micro-vir)](https://github.com/099duvian/micro-vir/issues)
-[![GitHub stars](https://img.shields.io/github/stars/099duvian/micro-vir)](https://github.com/099duvian/micro-vir/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/099duvian/micro-vir)](https://github.com/JuanPabloSuarezA/Micro-Vir_UPB/issues)
+[![GitHub stars](https://img.shields.io/github/stars/099duvian/micro-vir)](https://github.com/JuanPabloSuarezA/Micro-Vir_UPB/stargazers)
 # Micro-Vir_UPB
 
 
@@ -65,12 +65,12 @@ You can improve this project with a pull request
 This project is under the license [GPLv3](LICENSE.md)
 
 ## Authors
-+Juan Pablo Suarez Ávila- *Developer* - 
-+Carolina Becerra Londoño- *Developer* - 
-+Diego Andrés Arbeláez Barrios- *Developer* - 
-+Aldahir Laín Mendoza Martínez- *Developer* - 
-+Duvian Esneberth Ariza Carreño- *Developer* - 
-+Camilo Fernando Sierra Quitian - *Developer* - 
++ + **Juan Pablo Suarez Ávila** - *Developer* - 
++ + **Carolina Becerra Londoño** - *Developer* - 
++ + **Diego Andrés Arbeláez Barrios** - *Developer* - 
++ + **Aldahir Laín Mendoza Martínez** - *Developer* - 
++ + **Duvian Esneberth Ariza Carreño** - *Developer* - 
++ + **Camilo Fernando Sierra Quitian** - *Developer* - 
 
 
 
