@@ -30,9 +30,15 @@ export default function MenuTop(props) {
       <Sider className="client-sider" collapsed={menuCollapsed}>
         <Menu theme="dark" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1" className="client-sider_title">
-            <Link to={"/"}>
+            <Link to={"/admin"}>
               <ProfileOutlined />
               <span>Administración</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="2" className="client-sider_title">
+            <Link to={"/"}>
+              <HomeOutlined />
+              <span>Home</span>
             </Link>
           </Menu.Item>
         </Menu>

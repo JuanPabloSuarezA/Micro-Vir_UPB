@@ -9,7 +9,7 @@ import "./MenuTop.css";
 import { Nav, Navbar } from "react-bootstrap";
 
 //Antd
-import { Button } from "antd";
+import { Popconfirm, message, Button, notification } from "antd";
 import { PoweroffOutlined } from "@ant-design/icons";
 
 export default function MenuTop() {
@@ -19,9 +19,16 @@ export default function MenuTop() {
   };
   return (
     <div className="btn-power">
-      <Button onClick={logOut} type="link">
-        <PoweroffOutlined style={{ fontSize: "25px" }} />
-      </Button>
+      <Popconfirm
+        title="¿Deseas cerrar sesión?"
+        onConfirm={logOut}
+        cancelText="No"
+        okText="Sí"
+      >
+        <Button type="link">
+          <PoweroffOutlined style={{ fontSize: "25px", color: "red" }} />
+        </Button>
+      </Popconfirm>
     </div>
   );
 }

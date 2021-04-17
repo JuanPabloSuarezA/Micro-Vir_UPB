@@ -4,7 +4,7 @@ import axios from "axios";
 
 //Antd
 import "antd/lib/notification/style/css";
-import { notification } from "antd";
+import { Popconfirm, message, Button, notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class VideoView extends Component {
@@ -38,7 +38,7 @@ export default class VideoView extends Component {
       .get(`http://localhost:4000/videos/${this.state.idVideo}/delete`, {
         params: {
           Token: localStorage.getItem("authToken"),
-          sizeVideo:this.state.sizeVideo,
+          sizeVideo: this.state.sizeVideo,
           id: this.state.idVideo,
         },
       })
@@ -65,6 +65,7 @@ export default class VideoView extends Component {
             <video
               controls
               autoPlay
+              muted
               style={{ height: "350px", width: "600px" }}
             >
               <source
@@ -85,9 +86,16 @@ export default class VideoView extends Component {
               <h6>{"Autor: " + this.state.videoInfo.author}</h6>
             </div>
             <hr></hr>
-            <a className="btn btn-danger" onClick={this.handleDelete}>
-              Delete
-            </a>
+
+            <Popconfirm
+              title="Confirma si deseas eliminar"
+              onConfirm={this.handleDelete}
+              okText="Sí"
+              cancelText="No"
+            >
+              <a className="btn btn-danger">Delete</a>
+            </Popconfirm>
+
             {this.state.videoDelete ? <Redirect to={"/videos"} /> : null}
           </div>
         </header>

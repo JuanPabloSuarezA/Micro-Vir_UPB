@@ -4,7 +4,7 @@ import axios from "axios";
 
 //Antd
 import "antd/lib/notification/style/css";
-import { notification } from "antd";
+import { Popconfirm, message, Button, notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class InfoImagen extends React.Component {
@@ -64,7 +64,7 @@ export default class InfoImagen extends React.Component {
 
   render() {
     return (
-      <div className="p-5">
+      <div style={{ paddingLeft: "100px" }}>
         <div className="card" style={{ width: "18rem" }}>
           <h1>{console.log(this.state.image)}</h1>
           <img
@@ -74,9 +74,15 @@ export default class InfoImagen extends React.Component {
           />
           <div className="card-body">
             <h5 className="card-title">{this.state.image.title}</h5>
-            <a onClick={this.handleDelete} className="btn btn-danger">
-              Delete
-            </a>
+
+            <Popconfirm
+              title="Confirma si deseas eliminar"
+              onConfirm={this.handleDelete}
+              okText="Sí"
+              cancelText="No"
+            >
+              <a className="btn btn-danger">Delete</a>
+            </Popconfirm>
           </div>
           {this.state.imageDelete ? <Redirect to={"/"} /> : null}
         </div>
