@@ -94,7 +94,6 @@ export default class LoginComponent extends React.Component {
           >
             Ingresar
           </Button>
-          O <Link to={"/register"}>registrate ahora!</Link>
         </Form.Item>
       </Form>
     );

@@ -1,6 +1,6 @@
-.prueba {
-  background-color: rgb(224, 224, 228);
-}
+/*.prueba {*/
+/*  background-color: rgb(224, 224, 228);*/
+/*}*/
 /* .center {
   margin: 0;
   position: absolute;
@@ -12,9 +12,23 @@
 } */
 
 .videosContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
   position: relative;
-  transform: translate(0%, 50%);
+  top: 8rem;
+}
+.svgNoVideos{
+  margin: 0;
+  width: 25rem;
+  height: 25rem;
+  position: relative;
+  left: 20rem;
+  top: -4rem;
+}
+.h1NoVideos{
+  display: inline-block;
+  margin: 0;
+  position: relative;
+  top: 13rem;
 }

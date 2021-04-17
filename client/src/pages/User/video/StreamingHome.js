@@ -6,6 +6,7 @@ import "../../../App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import "./video.css";
 import axios from "axios";
+import noImagesSvg from "../../../assets/svg/undraw_No_data_re_kwbl.svg";
 
 // import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css";
 const { Meta } = Card;
@@ -44,35 +45,37 @@ export default class StreamingHome extends Component {
     return (
       <Container className="videosContainer">
         <Row className="justify-content-md-center">
-          {this.state.videos.map((video) => (
-            <Col
-              sm
-              // style={{
-              //   display: "flex",
-              //   alignItems: "center",
-              //   justifyContent: "center",
-              // }}
-            >
-              <Link to={`/videos/${video._id}`}>
-                <Card
-                  hoverable
-                  className="antd-card"
-                  cover={<img src={vidLogo} alt="Not Found" />}
-                  bordered={true}
-                >
-                  <Meta
-                    title={video.name}
-                    description={"Duración: " + video.duration}
-                    style={{
-                      borderTop: "1px solid rgb(0, 72, 131)",
-                      width: "100%",
-                      textAlign: "center",
-                    }}
-                  ></Meta>
-                </Card>
-              </Link>
-            </Col>
-          ))}
+          {
+            this.state.videos.length === 0 ?
+                <div>
+                  <img className="svgNoVideos" src={noImagesSvg}/>
+                  <h1 className="h1NoVideos">No tienes videos</h1>
+                </div>
+                : 
+                this.state.videos.map((video) => (
+                    <Col
+                        sm>
+                      <Link to={`/videos/${video._id}`}>
+                        <Card
+                            hoverable
+                            className="antd-card"
+                            cover={<img src={vidLogo} alt="Not Found" />}
+                            bordered={true}
+                        >
+                          <Meta
+                              title={video.name}
+                              description={"Duración: " + video.duration}
+                              style={{
+                                borderTop: "1px solid rgb(0, 72, 131)",
+                                width: "100%",
+                                textAlign: "center",
+                              }}
+                          ></Meta>
+                        </Card>
+                      </Link>
+                    </Col>
+                ))
+          }
         </Row>
       </Container>
     );
