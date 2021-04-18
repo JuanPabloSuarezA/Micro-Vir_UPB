@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   const { email } = user;
   const usuario = await User.findOne({ email: email });
   // user.maxShare.push('3');
-  console.log(usuario);
+
   res.send({ user: user, maxShare: usuario.maxShare, usuario });
 });
 

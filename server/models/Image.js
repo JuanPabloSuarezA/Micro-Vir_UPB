@@ -1,4 +1,4 @@
-﻿const {Schema, model} = require('mongoose');
+﻿const { Schema, model } = require("mongoose");
 
 const imageSchema= new Schema({
     author: String,
@@ -12,4 +12,4 @@ const imageSchema= new Schema({
     shared: [String]
 })
 
-module.exports = model('Image', imageSchema)
+module.exports = model("Image", imageSchema);

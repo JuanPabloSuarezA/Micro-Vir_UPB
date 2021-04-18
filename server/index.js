@@ -24,7 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "public/img"),
   filename: (req, file, cb) => {
-    console.log(file);
     cb(null, uuidv4() + path.extname(file.originalname));
   },
 });

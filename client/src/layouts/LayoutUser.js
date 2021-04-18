@@ -37,12 +37,12 @@ export default function LayoutUser(props) {
       </Header>
 
       <Layout className="layout-user">
-        <div style={{ position: "fixed" }}>
+        <div style={{ position: "fixed", zIndex: 1 }}>
           <MenuSider menuCollapsed={menuCollapsed} />
         </div>
         <Content
           className="layout-user__content"
-          style={{ marginLeft: menuCollapsed ? "0px" : "100px" }}
+          style={{ marginLeft: menuCollapsed ? "0px" : "100px", zIndex: 0 }}
         >
           <LoadRoutes routes={routes} />
         </Content>

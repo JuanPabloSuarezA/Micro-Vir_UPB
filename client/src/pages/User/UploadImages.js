@@ -31,7 +31,6 @@ export default class UploadImages extends React.Component {
           ...this.state,
           maxShare: res.data.maxShare,
         });
-        console.log(this.state);
       })
       .catch((err) => {
         console.log(err);
@@ -71,7 +70,6 @@ export default class UploadImages extends React.Component {
         formData.append("description", this.state.description);
         formData.append("Token", localStorage.getItem("authToken"));
         formData.append("tipo", "upload");
-        console.log(this.state.image);
 
         const esImagen = this.state.image.type.includes("image");
         axios
@@ -89,7 +87,6 @@ export default class UploadImages extends React.Component {
                 description: "El archivo fue compartido correctamente",
               });
               this.LoadData();
-              console.log(res);
             } else {
               notification.open({
                 icon: <SmileOutlined rotate={180} />,
@@ -116,7 +113,6 @@ export default class UploadImages extends React.Component {
         ...this.state,
         title: e.target.value,
       });
-      console.log(this.state.maxShare);
     };
     const handleDescription = async (e) => {
       await this.setState({

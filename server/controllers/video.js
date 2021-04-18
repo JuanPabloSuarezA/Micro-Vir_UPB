@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const Video = require("../models/Video");
-const User = require("../models/User")
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const { unlink } = require("fs-extra");
@@ -15,7 +15,7 @@ const PreviewVideos = async (req, res, next) => {
   try {
     const token = req.body.token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(email);
+
     const videos = await Video.find({ author: email }, (error, data) => {
       if (error) {
         console.log(error);
@@ -47,14 +47,13 @@ const UploadVideo = async (req, res) => {
   if (req.body.tipo === "upload") {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    const videoSize = (req.file.size)*(9.31*10**-10);
-    const {maxShare} = await User.findOne({email: email});
+    const videoSize = req.file.size * (9.31 * 10 ** -10);
+    const { maxShare } = await User.findOne({ email: email });
     const newSize = maxShare - videoSize;
-    if (newSize < 0){
+    if (newSize < 0) {
       res.send(false);
-    }else{
+    } else {
       try {
-        console.log(newSize);
         const video = new Video();
         video.author = email.toLowerCase();
         video.name = req.body.title;
@@ -64,18 +63,23 @@ const UploadVideo = async (req, res) => {
         video.mimetype = req.file.mimetype;
         video.size = videoSize;
         getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
-            async (duration) => {
-              var date = new Date(0);
-              date.setSeconds(duration);
-              var timeStr = date.toISOString().substr(11, 8);
-              console.log(timeStr);
-              video.duration = timeStr;
-              res.send(true);
-              await User.findOneAndUpdate({email: email}, {$set:{
-                  maxShare: newSize
-                }});
-              await video.save();
-            }
+          async (duration) => {
+            var date = new Date(0);
+            date.setSeconds(duration);
+            var timeStr = date.toISOString().substr(11, 8);
+
+            video.duration = timeStr;
+            res.send(true);
+            await User.findOneAndUpdate(
+              { email: email },
+              {
+                $set: {
+                  maxShare: newSize,
+                },
+              }
+            );
+            await video.save();
+          }
         );
       } catch (e) {
         res.send(false);
@@ -91,14 +95,19 @@ const UploadVideo = async (req, res) => {
 const DeleteVideo = async (req, res) => {
   try {
     const { id } = req.params;
-    const {Token, sizeVideo} = req.query;
+    const { Token, sizeVideo } = req.query;
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
-    const {maxShare} = await User.findOne({email: email});
+    const { maxShare } = await User.findOne({ email: email });
     // const videoSize = sizeVideo;
-    const newSize = (Number(maxShare)+ Number(sizeVideo));
-    await User.findOneAndUpdate({email: email}, {$set:{
-        maxShare: newSize
-      }});
+    const newSize = Number(maxShare) + Number(sizeVideo);
+    await User.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          maxShare: newSize,
+        },
+      }
+    );
     const videoDeleted = await Video.findByIdAndDelete(id);
 
     await unlink(path.resolve(imgFolder + `/${videoDeleted.fileName}`));
@@ -108,6 +117,27 @@ const DeleteVideo = async (req, res) => {
   }
 };
 
+//Actualizar videos
+
+const UpdateVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, Token, fileName } = req.query;
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+    await Video.findOneAndUpdate(
+      { fileName: fileName },
+      {
+        $set: {
+          name: title,
+          description: description,
+        },
+      }
+    );
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
+};
 /***************************************************************************************
  *    Title: Video Streaming Application
  *    Author: Rathore, D
@@ -133,8 +163,6 @@ const StreamVideo = async (req, res, next) => {
   //Se recibe el parametro range enviado por el navegador
   // para determinar cual trozo de video enviar
   const range = req.headers.range;
-
-  console.log(range);
 
   // Como no todos los navegadores envian el parametro range
   // se manejan los que no lo envian en el bloque else
@@ -197,4 +225,5 @@ module.exports = {
   MetaVideo,
   UploadVideo,
   DeleteVideo,
+  UpdateVideo,
 };

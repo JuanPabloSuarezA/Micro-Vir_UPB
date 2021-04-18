@@ -35,12 +35,9 @@ export default class RegisterForm extends React.Component {
         ...this.setState,
         [e.target.name]: e.target.value,
       });
-      console.log(e.target.value);
     };
 
     const dateChange = (date, dateString) => {
-      console.log(dateString);
-
       this.setState({
         ...this.setState,
         birthDate: dateString,

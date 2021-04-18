@@ -22,10 +22,8 @@ exports.register = async (req, res, next) => {
       lastName,
       birthDate,
       access,
-      maxShare
+      maxShare,
     });
-
-    console.log(user);
 
     sendToken(user, 201, res);
   } catch (error) {
