@@ -79,28 +79,40 @@ export default class InfoImagen extends React.Component {
     e.preventDefault();
     const wtitle = this.wrapper.current.getFieldValue("title");
     const wdescription = this.wrapper.current.getFieldValue("description");
-    axios
-      .get(`http://localhost:4000/image/${this.props.match.params.id}/update`, {
-        params: {
-          Token: localStorage.getItem("authToken"),
-          title: wtitle,
-          description: wdescription,
-          fileName: this.state.image.fileName,
-          id: this.props.match.params.id,
-        },
-      })
-      .then(async (response) => {
-        notification.open({
-          icon: <SmileOutlined rotate={180} />,
-          message: "Éxito",
-          description:
-            "Los datos de la imagen fueron actualizados correctamente",
-        });
-        this.loadImage();
-      })
-      .catch((error) => {
-        console.log(error);
+
+    if (wtitle === "" || wdescription === "") {
+      notification.open({
+        icon: <SmileOutlined rotate={180} />,
+        message: "Error",
+        description: "No puedes dejar campos vacíos",
       });
+    } else {
+      axios
+        .get(
+          `http://localhost:4000/image/${this.props.match.params.id}/update`,
+          {
+            params: {
+              Token: localStorage.getItem("authToken"),
+              title: wtitle,
+              description: wdescription,
+              fileName: this.state.image.fileName,
+              id: this.props.match.params.id,
+            },
+          }
+        )
+        .then(async (response) => {
+          notification.open({
+            icon: <SmileOutlined rotate={180} />,
+            message: "Éxito",
+            description:
+              "Los datos de la imagen fueron actualizados correctamente",
+          });
+          this.loadImage();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   showModal = () => {

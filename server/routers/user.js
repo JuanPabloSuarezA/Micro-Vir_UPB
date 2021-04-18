@@ -9,9 +9,10 @@ const appDir = require("../config");
 const router = Router();
 const User = require("../models/User");
 
-router.post("/", async (req, res) => {
-  const token = req.body.Token;
-  const user = jwt.verify(token, process.env.JWT_SECRET);
+//Send user data
+router.get("/", async (req, res) => {
+  const { Token } = req.query;
+  const user = jwt.verify(Token, process.env.JWT_SECRET);
   const { email } = user;
   const usuario = await User.findOne({ email: email });
   // user.maxShare.push('3');
@@ -19,6 +20,29 @@ router.post("/", async (req, res) => {
   res.send({ user: user, maxShare: usuario.maxShare, usuario });
 });
 
+//Update user profile
+router.get("/updateProfile", async (req, res) => {
+  try {
+    const { userName, firstName, lastName, birthDate, Token } = req.query;
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+    await User.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          userName: userName,
+          firstName: firstName,
+          lastName: lastName,
+          birthDate: birthDate,
+        },
+      }
+    );
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
+});
+
+//Send all users
 router.post("/usersList", async (req, res) => {
   const token = req.body.Token;
   console.log(token);
@@ -27,6 +51,7 @@ router.post("/usersList", async (req, res) => {
   res.send(users);
 });
 
+//Delete one user
 router.post("/delete", async (req, res) => {
   try {
     const id = req.body._id;
