@@ -12,9 +12,7 @@
 } */
 
 .videosContainer {
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*align-items: center;*/
+  display: flex;
   position: relative;
   top: 8rem;
 }

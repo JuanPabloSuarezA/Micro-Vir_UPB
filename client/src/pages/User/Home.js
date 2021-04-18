@@ -4,7 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 //CSS
 import './Home.css'
 //SVG
-import noImagesSvg from '../../assets/svg/undraw_No_data_re_kwbl.svg'
+import noImagesSvg from '../../assets/icons/undraw_No_data_re_kwbl.svg'
 
 export default class Home extends React.Component {
   constructor() {

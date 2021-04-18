@@ -6,7 +6,7 @@ import "../../../App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import "./video.css";
 import axios from "axios";
-import noImagesSvg from "../../../assets/svg/undraw_No_data_re_kwbl.svg";
+import noImagesSvg from "../../../assets/icons/undraw_No_data_re_kwbl.svg";
 
 // import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css";
 const { Meta } = Card;

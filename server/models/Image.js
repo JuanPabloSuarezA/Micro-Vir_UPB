@@ -8,7 +8,8 @@ const imageSchema= new Schema({
     originalName: String,
     mimeType: String,
     size:  Number,
-    createdAt: {type: Date, default: Date.now()}
+    createdAt: {type: Date, default: Date.now()},
+    shared: [String]
 })
 
 module.exports = model('Image', imageSchema)
