@@ -4,12 +4,23 @@ import axios from "axios";
 
 //Antd
 import "antd/lib/notification/style/css";
-import { Popconfirm, message, Button, notification, Space, Modal } from "antd";
+import {
+  Popconfirm,
+  message,
+  Button,
+  notification,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Checkbox,
+} from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class InfoImagen extends React.Component {
-  constructor(...props) {
-    super(...props);
+  constructor(props) {
+    super(props);
+    this.wrapper = React.createRef();
     this.state = {
       image: "",
       imageDelete: false,
@@ -17,6 +28,7 @@ export default class InfoImagen extends React.Component {
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.loadImage = this.loadImage.bind(this);
   }
   loadImage() {
     axios
@@ -57,7 +69,6 @@ export default class InfoImagen extends React.Component {
         await this.setState({
           imageDelete: response.data,
         });
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -66,12 +77,14 @@ export default class InfoImagen extends React.Component {
 
   handleUpdate(e) {
     e.preventDefault();
+    const wtitle = this.wrapper.current.getFieldValue("title");
+    const wdescription = this.wrapper.current.getFieldValue("description");
     axios
       .get(`http://localhost:4000/image/${this.props.match.params.id}/update`, {
         params: {
           Token: localStorage.getItem("authToken"),
-          title: this.state.image.title,
-          description: "actualizado", //this.state.image.description,
+          title: wtitle,
+          description: wdescription,
           fileName: this.state.image.fileName,
           id: this.props.match.params.id,
         },
@@ -97,29 +110,57 @@ export default class InfoImagen extends React.Component {
   };
 
   handleOk = (e) => {
-    console.log(e);
+    this.handleUpdate(e);
     this.setState({
       visible: false,
     });
   };
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   };
 
   render() {
-    return (
-      <div style={{ paddingLeft: "100px" }}>
-        <div className="card" style={{ width: "18rem" }}>
-          <h1>{console.log(this.state.image)}</h1>
+    const onFinish = (values) => {
+      console.log("Success:", values);
+    };
+
+    const onFinishFailed = (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
+
+    const valid = () => {
+      if (this.state.image.fileName) {
+        return (
           <img
             src={`http://localhost:4000/images/${this.state.image.fileName}`}
             className="card-img-top"
             alt="..."
           />
+        );
+      }
+    };
+
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+
+    return (
+      <div style={{ paddingLeft: "100px" }}>
+        <div className="card" style={{ width: "18rem" }}>
+          {/* <img
+            src={`http://localhost:4000/images/${this.state.image.fileName}`}
+            className="card-img-top"
+            alt="..."
+          /> */}
+          {valid()}
           <div className="card-body">
             <h5 className="card-title">
               {"Título: " + this.state.image.title}
@@ -145,14 +186,50 @@ export default class InfoImagen extends React.Component {
             </Space>
 
             <Modal
-              title="Editar video"
+              title="Editar imagen"
               visible={this.state.visible}
               onOk={this.handleOk}
               onCancel={this.handleCancel}
+              okText="Confirmar"
+              cancelText="Cancelar"
               okButtonProps={{ disabled: false }}
               cancelButtonProps={{ disabled: false }}
             >
-              <p>Eeeee</p>
+              <Form
+                ref={this.wrapper}
+                name="control-ref"
+                initialValues={{
+                  title: this.state.image.title,
+                  description: this.state.image.description,
+                }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                {...layout}
+              >
+                <Form.Item
+                  label="Título"
+                  name="title"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  label="Descripción"
+                  name="description"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Form>
             </Modal>
           </div>
           {this.state.imageDelete ? <Redirect to={"/"} /> : null}

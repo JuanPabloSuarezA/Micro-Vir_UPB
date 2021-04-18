@@ -3,12 +3,23 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 //Antd
 import "antd/lib/notification/style/css";
-import { Popconfirm, message, Button, notification, Space, Modal } from "antd";
+import {
+  Popconfirm,
+  message,
+  Button,
+  notification,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Checkbox,
+} from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export default class VideoView extends Component {
   constructor(props) {
     super(props);
+    this.wrapper = React.createRef();
     this.state = {
       idVideo: this.props.match.params.idVideo,
       videoInfo: "",
@@ -18,19 +29,25 @@ export default class VideoView extends Component {
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.loadVideo = this.loadVideo.bind(this);
   }
-  async componentDidMount() {
-    try {
-      const res = await fetch(
-        `http://localhost:4000/videos/${this.state.idVideo}/videoInfo`
-      ).then((response) => {
-        return response.json();
+
+  loadVideo() {
+    axios
+      .get(`http://localhost:4000/videos/${this.state.idVideo}/videoInfo`, {
+        params: {
+          id: this.state.idVideo,
+        },
+      })
+      .then((response) => {
+        this.setState({ videoInfo: response.data, sizeVideo: response.size });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      this.setState({ videoInfo: res, sizeVideo: res.size });
-    } catch (err) {
-      console.log(err);
-    }
-    console.log(this.state.videoInfo);
+  }
+  componentDidMount() {
+    this.loadVideo();
   }
 
   handleDelete(e) {
@@ -60,12 +77,15 @@ export default class VideoView extends Component {
 
   handleUpdate(e) {
     e.preventDefault();
+
+    const wtitle = this.wrapper.current.getFieldValue("title");
+    const wdescription = this.wrapper.current.getFieldValue("description");
     axios
       .get(`http://localhost:4000/videos/${this.state.idVideo}/update`, {
         params: {
           Token: localStorage.getItem("authToken"),
-          title: this.state.videoInfo.name,
-          description: "actualizado", //this.state.image.description,
+          title: wtitle,
+          description: wdescription,
           fileName: this.state.videoInfo.fileName,
           id: this.props.match.params.id,
         },
@@ -76,7 +96,7 @@ export default class VideoView extends Component {
           message: "Éxito",
           description: "Los datos del video fueron actualizados correctamente",
         });
-        this.componentDidMount();
+        this.loadVideo();
       })
       .catch((error) => {
         console.log(error);
@@ -90,20 +110,36 @@ export default class VideoView extends Component {
   };
 
   handleOk = (e) => {
-    console.log(e);
+    this.handleUpdate(e);
     this.setState({
       visible: false,
     });
   };
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   };
 
   render() {
+    const onFinish = (values) => {
+      console.log("Success:", values);
+    };
+
+    const onFinishFailed = (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
+
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+
     return (
       <div className="App">
         <header className="App-header">
@@ -154,11 +190,49 @@ export default class VideoView extends Component {
               title="Editar video"
               visible={this.state.visible}
               onOk={this.handleOk}
+              okText="Confirmar"
+              cancelText="Cancelar"
               onCancel={this.handleCancel}
-              okButtonProps={{ disabled: false }}
+              okButtonProps={{
+                disabled: false,
+              }}
               cancelButtonProps={{ disabled: false }}
             >
-              <p>Eeeee</p>
+              <Form
+                ref={this.wrapper}
+                name="control-ref"
+                initialValues={{
+                  title: this.state.videoInfo.name,
+                  description: this.state.videoInfo.description,
+                }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                {...layout}
+              >
+                <Form.Item
+                  label="Título"
+                  name="title"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  label="Descripción"
+                  name="description"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Form>
             </Modal>
 
             {this.state.videoDelete ? <Redirect to={"/videos"} /> : null}

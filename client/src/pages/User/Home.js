@@ -13,7 +13,6 @@ export default class Home extends React.Component {
       images: [],
       // noImages: ""
     };
-    this.handleInfo = this.handleInfo.bind(this);
   }
 
   loadData() {
@@ -36,21 +35,6 @@ export default class Home extends React.Component {
     this.loadData();
   }
 
-  handleInfo(e, img) {
-    e.preventDefault();
-    axios
-      .get(`http://localhost:4000/image/${img._id}`, {
-        params: {
-          id: img._id,
-        },
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
   render() {
     return (
       <div>

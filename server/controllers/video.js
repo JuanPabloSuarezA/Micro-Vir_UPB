@@ -15,7 +15,7 @@ const PreviewVideos = async (req, res, next) => {
   try {
     const token = req.body.token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(email);
+
     const videos = await Video.find({ author: email }, (error, data) => {
       if (error) {
         console.log(error);
@@ -54,7 +54,6 @@ const UploadVideo = async (req, res) => {
       res.send(false);
     } else {
       try {
-        console.log(newSize);
         const video = new Video();
         video.author = email.toLowerCase();
         video.name = req.body.title;
@@ -68,7 +67,7 @@ const UploadVideo = async (req, res) => {
             var date = new Date(0);
             date.setSeconds(duration);
             var timeStr = date.toISOString().substr(11, 8);
-            console.log(timeStr);
+
             video.duration = timeStr;
             res.send(true);
             await User.findOneAndUpdate(
@@ -164,8 +163,6 @@ const StreamVideo = async (req, res, next) => {
   //Se recibe el parametro range enviado por el navegador
   // para determinar cual trozo de video enviar
   const range = req.headers.range;
-
-  console.log(range);
 
   // Como no todos los navegadores envian el parametro range
   // se manejan los que no lo envian en el bloque else

@@ -32,7 +32,6 @@ export default class PerfilComponent extends React.Component {
           user: res.data.usuario,
           maxShare: res.data.maxShare.toFixed(2),
         });
-        console.log(this.state);
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +43,6 @@ export default class PerfilComponent extends React.Component {
 
   render() {
     const rol = (valor) => {
-      console.log(valor);
       if (valor === 1) {
         return "Cliente";
       } else {

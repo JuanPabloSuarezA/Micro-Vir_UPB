@@ -60,7 +60,6 @@ export default class AdminHome extends React.Component {
   }
 
   confirmEliminar = (record) => {
-    console.log(record);
     this.handleDelete(record);
   };
 
@@ -121,30 +120,12 @@ export default class AdminHome extends React.Component {
     const { Column, ColumnGroup } = Table;
 
     function cancel(e) {
-      console.log(e);
       message.error("Click on No");
     }
 
     return (
       <div>
-        <Table
-          // columns={columns}
-          dataSource={this.state.users}
-          // onRow={(record, rowIndex) => {
-          //   // console.log(record);
-          //   return {
-          //     onClick: (e) => {
-          //       // console.log(e);
-          //       if (e.target.innerText === "Eliminar") {
-          //         console.log("Exito BORRADO");
-          //         // this.handleDelete(e, record);
-          //       } else if (e.target.innerText === "Editar") {
-          //         console.log("Exito editado");
-          //       }
-          //     },
-          //   };
-          // }}
-        >
+        <Table dataSource={this.state.users}>
           <Column
             title="Nombre de usuario"
             dataIndex="userName"

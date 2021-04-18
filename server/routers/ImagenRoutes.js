@@ -31,16 +31,11 @@ router.post("/", async (req, res) => {
 router.get("/image/:id", async (req, res) => {
   const { id } = req.params;
   const image = await Image.findById(id);
-
-  console.log("Server diego{");
-  console.log(image);
-  console.log("Server diego}");
   res.send(image);
 });
 
 router.get("/images/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id);
   res.sendFile(`/public/img/${id}`, {
     root: appDir,
   });
