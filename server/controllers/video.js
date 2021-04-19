@@ -16,14 +16,17 @@ const PreviewVideos = async (req, res, next) => {
     const token = req.body.token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
 
-    const videos = await Video.find({ author: email }, (error, data) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(data);
+    const videosShared = await Video.find(
+      { shared: email },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
       }
-    });
-    res.json(videos);
+    );
+    res.json(videosShared);
   } catch (err) {
     console.log(err);
     next();
@@ -68,6 +71,7 @@ const UploadVideo = async (req, res) => {
         video.originalName = req.file.originalname;
         video.mimetype = req.file.mimetype;
         video.size = videoSize;
+        video.shared = [email.toLowerCase()]
         getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
           async (duration) => {
             var date = new Date(0);
@@ -120,6 +124,27 @@ const DeleteVideo = async (req, res) => {
     const videoDeleted = await Video.findByIdAndDelete(id);
 
     await unlink(path.resolve(imgFolder + `/${videoDeleted.fileName}`));
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
+};
+
+//Delete video compartido
+const DeleteVideoShared = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { Token } = req.query;
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+
+    await Video.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          shared: email,
+        },
+      }
+    );
     res.send(true);
   } catch (e) {
     res.send(false);
@@ -228,6 +253,36 @@ const StreamVideo = async (req, res, next) => {
   }
 };
 
+//Compartir Video
+const SharedVideo = async (req, res) => {
+  const { params } = req.body;
+  const { email, id } = params;
+  console.log(id)
+  const userValidate = await User.findOne({ email: email });
+  console.log(userValidate);
+  if (userValidate) {
+    Video.updateOne(
+      { _id: id },
+      {
+        $addToSet: {
+          shared: [email],
+        },
+      },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
+      }
+    );
+    res.send(true);
+  } else {
+    res.send(false);
+    console.log("Usuario no encontrado");
+  }
+};
+
 module.exports = {
   StreamVideo,
   PreviewVideos,
@@ -235,4 +290,6 @@ module.exports = {
   UploadVideo,
   DeleteVideo,
   UpdateVideo,
+  DeleteVideoShared,
+  SharedVideo
 };

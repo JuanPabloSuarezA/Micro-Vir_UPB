@@ -14,6 +14,7 @@ import {
   Form,
   Input,
   Checkbox,
+  Radio
 } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
@@ -25,10 +26,29 @@ export default class InfoImagen extends React.Component {
       image: "",
       imageDelete: false,
       visible: false,
+      visibleD: false,
+      user:"",
+      shared: ""
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.loadImage = this.loadImage.bind(this);
+  }
+  loadData() {
+    axios
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
+        this.setState({
+          user: response.data.usuario,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   loadImage() {
     axios
@@ -47,33 +67,66 @@ export default class InfoImagen extends React.Component {
       });
   }
   componentDidMount() {
+    this.loadData();
     this.loadImage();
+    
   }
 
   handleDelete(e) {
     e.preventDefault();
-    axios
-      .get(`http://localhost:4000/image/${this.props.match.params.id}/delete`, {
-        params: {
-          Token: localStorage.getItem("authToken"),
-          imageSize: this.state.image.size,
-          id: this.props.match.params.id,
-        },
-      })
-      .then(async (response) => {
-        notification.open({
-          icon: <SmileOutlined rotate={180} />,
-          message: "Éxito",
-          description: "La imagen fue eliminada correctamente",
-        });
-        await this.setState({
-          imageDelete: response.data,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.state.user.email === this.state.image.author
+      ? axios
+          .get(
+            `http://localhost:4000/image/${this.props.match.params.id}/delete`,
+            {
+              params: {
+                Token: localStorage.getItem("authToken"),
+                imageSize: this.state.image.size,
+                id: this.props.match.params.id,
+              },
+            }
+          )
+          .then(async (response) => {
+            notification.open({
+              icon: <SmileOutlined rotate={180} />,
+              message: "Éxito",
+              description: "La imagen fue eliminada correctamente",
+            });
+            await this.setState({
+              imageDelete: response.data,
+            });
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      : axios
+          .get(
+            `http://localhost:4000/image/${this.props.match.params.id}/delete-shared`,
+            {
+              params: {
+                Token: localStorage.getItem("authToken"),
+                imageSize: this.state.image.size,
+                id: this.props.match.params.id,
+              },
+            }
+          )
+          .then(async (response) => {
+            notification.open({
+              icon: <SmileOutlined rotate={180} />,
+              message: "Éxito",
+              description: "La imagen fue eliminada correctamente",
+            });
+            await this.setState({
+              imageDelete: response.data,
+            });
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
   }
+
 
   handleUpdate(e) {
     e.preventDefault();
@@ -119,6 +172,7 @@ export default class InfoImagen extends React.Component {
     this.setState({
       visible: true,
     });
+    console.log(this.state.image.author)
   };
 
   handleOk = (e) => {
@@ -164,6 +218,59 @@ export default class InfoImagen extends React.Component {
       },
     };
 
+    const handleOkD = (e) => {
+      this.handleUpdate(e);
+      this.setState({
+        visibleD: false,
+      });
+    };
+
+    const handleCancelD = () => {
+      this.setState({ visibleD: false });
+    };
+
+    const showModalD = () => {
+      this.setState({
+        visibleD: true,
+      });
+    };
+
+    const onFinishD = (e) => {
+      axios
+        .post(`http://localhost:4000/shared`, {
+          params: {
+            id: this.state.image._id,
+            email: this.state.shared,
+          },
+        })
+        .then(async (response) => {
+          console.log(response.data);
+          if (response.data) {
+            notification.open({
+              icon: <SmileOutlined />,
+              message: "Éxito",
+              description: "La imagen fue compartida",
+            });
+          } else {
+            notification.open({
+              icon: <SmileOutlined rotate={180} />,
+              message: "Error",
+              description: "El usuario no existe",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const handleSharedD = (e) => {
+      this.setState({
+        ...this.state,
+        shared: e.target.value,
+      });
+    };
+
     return (
       <div style={{ paddingLeft: "100px" }}>
         <div className="card" style={{ width: "18rem" }}>
@@ -181,20 +288,39 @@ export default class InfoImagen extends React.Component {
             <h6>{"Autor: " + this.state.image.author}</h6>
 
             <Space size="middle">
-              <Button type="primary" onClick={this.showModal}>
-                Editar
-              </Button>
-
-              <Popconfirm
-                title="Confirma si deseas eliminar"
-                onConfirm={this.handleDelete}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button type="primary" danger>
-                  Eliminar
-                </Button>
-              </Popconfirm>
+              <Radio.Group buttonStyle="solid">
+                {
+                  this.state.user.email === this.state.image.author ?
+                  <>
+                    <Radio.Button onClick={this.showModal}>
+                      Editar
+                    </Radio.Button>
+                    <Radio.Button  onClick={showModalD}>
+                      Compartir
+                    </Radio.Button>
+                  </>
+                  :
+                  <>
+                    <Radio.Button onClick={this.showModal} disabled>
+                      Editar
+                    </Radio.Button>
+                    <Radio.Button  onClick={showModalD} disabled>
+                      Compartir
+                    </Radio.Button>  
+                  </>
+                  
+                }
+                 <Popconfirm
+                  title="Confirma si deseas eliminar"
+                  onConfirm={this.handleDelete}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                <Radio.Button >
+                    Eliminar
+                </Radio.Button>
+                </Popconfirm>
+              </Radio.Group>
             </Space>
 
             <Modal
@@ -243,6 +369,43 @@ export default class InfoImagen extends React.Component {
                 </Form.Item>
               </Form>
             </Modal>
+            {/*-------------- Compartir ---------------------- */}
+
+
+            <Modal
+              visible={this.state.visibleD}
+              title="Compartir"
+              onOk={handleOkD}
+              onCancel={handleCancelD}
+              footer={[
+                <Button key="back" onClick={handleCancelD}>
+                  Cancelar
+                </Button>,
+              ]}
+            >
+              <Form name="basic" onFinish={onFinishD}>
+                <Form.Item
+                  name="correo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Ingresa el correo eléctronico!",
+                    },
+                  ]}
+                >
+                  <Input
+                    onChange={handleSharedD}
+                    placeholder="Correo electrónico"
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Compartir
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
+
           </div>
           {this.state.imageDelete ? <Redirect to={"/"} /> : null}
         </div>

@@ -110,6 +110,7 @@ router.get("/image/:id/delete-shared", async (req, res) => {
     );
     res.send(true);
   } catch (e) {
+    res.send(false);
     console.log(e);
   }
 });

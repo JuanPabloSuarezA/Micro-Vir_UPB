@@ -10,6 +10,7 @@ const videoSchema = new Schema({
   description: String,
   size: Number,
   createdAt: { type: Date, default: Date.now() },
+  shared: [String],
 });
 
 module.exports = model("Video", videoSchema);

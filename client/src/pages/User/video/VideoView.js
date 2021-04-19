@@ -13,6 +13,7 @@ import {
   Form,
   Input,
   Checkbox,
+  Radio
 } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
@@ -26,10 +27,29 @@ export default class VideoView extends Component {
       sizeVideo: "",
       videoDelete: false,
       visible: false,
+      user: "",
+      shared: ""
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.loadVideo = this.loadVideo.bind(this);
+  }
+
+  loadData() {
+    axios
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
+        this.setState({
+          user: response.data.usuario,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   loadVideo() {
@@ -47,11 +67,13 @@ export default class VideoView extends Component {
       });
   }
   componentDidMount() {
+    this.loadData();
     this.loadVideo();
   }
 
   handleDelete(e) {
     e.preventDefault();
+    this.state.user.email === this.state.videoInfo.author ?
     axios
       .get(`http://localhost:4000/videos/${this.state.idVideo}/delete`, {
         params: {
@@ -72,7 +94,29 @@ export default class VideoView extends Component {
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      :
+      axios
+      .get(`http://localhost:4000/videos/${this.state.idVideo}/delete-shared`, {
+        params: {
+          Token: localStorage.getItem("authToken"),
+          id: this.state.idVideo,
+        },
+      })
+      .then(async (response) => {
+        notification.open({
+          icon: <SmileOutlined />,
+          message: "Éxito",
+          description: "El video fue eliminado correctamente",
+        });
+        await this.setState({
+          videoDelete: response.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
   }
 
   handleUpdate(e) {
@@ -131,8 +175,10 @@ export default class VideoView extends Component {
       visible: false,
     });
   };
+  
 
   render() {
+
     const onFinish = (values) => {
       console.log("Success:", values);
     };
@@ -148,6 +194,58 @@ export default class VideoView extends Component {
       wrapperCol: {
         span: 16,
       },
+    };
+
+    const onFinishD = (e) => {
+      console.log(this.state)
+      axios
+        .post(`http://localhost:4000/videos/sharedVideo`, {
+          params: {
+            id: this.state.idVideo,
+            email: this.state.shared,
+          },
+        })
+        .then(async (response) => {
+          console.log(response.data);
+          if (response.data) {
+            notification.open({
+              icon: <SmileOutlined />,
+              message: "Éxito",
+              description: "El video fue compartido",
+            });
+          } else {
+            notification.open({
+              icon: <SmileOutlined rotate={180} />,
+              message: "Error",
+              description: "El usuario no existe",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    const handleOkD = (e) => {
+      this.handleUpdate(e);
+      this.setState({
+        visibleD: false,
+      });
+    };
+
+    const handleCancelD = () => {
+      this.setState({ visibleD: false });
+    };
+
+    const showModalD = () => {
+      this.setState({
+        visibleD: true,
+      });
+    };
+    const handleSharedD = (e) => {
+      this.setState({
+        ...this.state,
+        shared: e.target.value,
+      });
     };
 
     return (
@@ -180,20 +278,40 @@ export default class VideoView extends Component {
             <hr></hr>
 
             <Space size="middle">
-              <Button type="primary" onClick={this.showModal}>
-                Editar
-              </Button>
+              <Radio.Group buttonStyle="solid">
+                {
+                  this.state.user.email === this.state.videoInfo.author ? 
+                  <>
+                  <Radio.Button  onClick={this.showModal}>
+                    Editar
+                  </Radio.Button>
+                  <Radio.Button  onClick={showModalD} >
+                    Compartir
+                  </Radio.Button>
+                  </>
+                  :
+                  <>
+                  <Radio.Button onClick={this.showModal} disabled>
+                  Editar
+                  </Radio.Button>
+                  <Radio.Button  onClick={showModalD} disabled>
+                    Compartir
+                  </Radio.Button>
+                  </>
 
-              <Popconfirm
-                title="Confirma si deseas eliminar"
-                onConfirm={this.handleDelete}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button type="primary" danger>
-                  Eliminar
-                </Button>
-              </Popconfirm>
+                }
+                <Popconfirm
+                    title="Confirma si deseas eliminar"
+                    onConfirm={this.handleDelete}
+                    okText="Sí"
+                    cancelText="No"
+                  >
+                    <Radio.Button>
+                      Eliminar
+                    </Radio.Button>
+                  </Popconfirm>
+                </Radio.Group>
+              
             </Space>
 
             <Modal
@@ -241,6 +359,42 @@ export default class VideoView extends Component {
                   ]}
                 >
                   <Input />
+                </Form.Item>
+              </Form>
+            </Modal>
+
+            {/* -------------- Compartir ------------------ */}
+            
+            <Modal
+              visible={this.state.visibleD}
+              title="Compartir"
+              onOk={handleOkD}
+              onCancel={handleCancelD}
+              footer={[
+                <Button key="back" onClick={handleCancelD}>
+                  Cancelar
+                </Button>,
+              ]}
+            >
+              <Form name="basic" onFinish={onFinishD}>
+                <Form.Item
+                  name="correo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Ingresa el correo eléctronico!",
+                    },
+                  ]}
+                >
+                  <Input
+                    onChange={handleSharedD}
+                    placeholder="Correo electrónico"
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Compartir
+                  </Button>
                 </Form.Item>
               </Form>
             </Modal>
