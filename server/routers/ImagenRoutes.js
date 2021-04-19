@@ -100,6 +100,9 @@ router.get("/image/:id/delete-shared", async (req, res) => {
     res.send(true);
   } catch (e) {
     console.log(e);
+  }
+})
+
 //Update image
 router.get("/image/:id/update", async (req, res) => {
   try {
