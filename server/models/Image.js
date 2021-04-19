@@ -7,9 +7,10 @@ const imageSchema = new Schema({
   path: String,
   originalName: String,
   mimeType: String,
-  description: String,
   size: Number,
+  description: String,
   createdAt: { type: Date, default: Date.now() },
+  shared: [String],
 });
 
 module.exports = model("Image", imageSchema);

@@ -15,16 +15,32 @@ const Image = require("../models/Image");
 
 //Home
 router.post("/", async (req, res) => {
+  //Subidas
   const token = req.body.token;
   const { email } = jwt.verify(token, process.env.JWT_SECRET);
-  const images = await Image.find({ author: email }, (error, data) => {
+  /* const images = await Image.find({ author: email }, (error, data) => {
     if (error) {
       console.log(error);
     } else {
       console.log(data);
     }
-  });
-  res.send(images);
+  }); */
+  //Shared
+  const imagesShared = await Image.find(
+    { shared: email },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        /*  res. send ( err ) ; */
+      } else {
+        console.log(result);
+        /* res. json( resultado ) ; */
+      }
+    }
+  );
+  console.log(imagesShared);
+  /* const allImages = Object.assign(images, imagesShared); */
+  res.send(imagesShared);
 });
 
 //Info image
@@ -70,6 +86,27 @@ router.get("/image/:id/delete", async (req, res) => {
   }
 });
 
+//Delete imagen compartida
+router.get("/image/:id/delete-shared", async (req, res) => {
+  try {
+    const { id } = req.params;
+    //Extraigo los params
+    const { Token } = req.query;
+    //Decodifico el token para obtener el email y saber qué usuario está logeado
+    const { email } = jwt.verify(Token, process.env.JWT_SECRET);
+    await Image.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          shared: email,
+        },
+      }
+    );
+    res.send(true);
+  } catch (e) {
+    console.log(e);
+  }
+});
 //Update image
 router.get("/image/:id/update", async (req, res) => {
   try {
@@ -112,6 +149,7 @@ router.post("/upload", async (req, res) => {
         image.originalName = req.file.originalname;
         image.mimetype = req.file.mimetype;
         image.size = imageSize;
+        image.shared = [email.toLowerCase()];
         await image.save();
         await User.findOneAndUpdate(
           { email: email },
@@ -123,6 +161,7 @@ router.post("/upload", async (req, res) => {
         );
         res.send(true);
       } catch (e) {
+        console.log(e);
         res.send(false);
       }
     }
@@ -130,6 +169,35 @@ router.post("/upload", async (req, res) => {
     const token = req.body.Token;
     const { userName } = jwt.verify(token, process.env.JWT_SECRET);
     res.json({ userName });
+  }
+});
+
+//Compartir imagen con otros usuarios
+router.post("/shared", async (req, res) => {
+  const { params } = req.body;
+  const { email, id } = params;
+  const userValidate = await User.findOne({ email: email });
+  console.log(userValidate);
+  if (userValidate) {
+    Image.updateOne(
+      { _id: id },
+      {
+        $addToSet: {
+          shared: [email],
+        },
+      },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
+      }
+    );
+    res.send(true);
+  } else {
+    res.send(false);
+    console.log("Usuario no encontrado");
   }
 });
 

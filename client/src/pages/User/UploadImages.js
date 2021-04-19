@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import axios from "axios";
 
 //Imports Antd
@@ -20,12 +20,12 @@ export default class UploadImages extends React.Component {
     };
   }
   LoadData() {
-    const formData = new FormData();
-    formData.append("Token", localStorage.getItem("authToken"));
-    formData.append("tipo", "profile");
-
     axios
-      .post("http://localhost:4000/profile", formData)
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
       .then((res) => {
         this.setState({
           ...this.state,
@@ -63,6 +63,7 @@ export default class UploadImages extends React.Component {
           description:
             "El archivo no se ha cargado. Revisa tu cuota disponible",
         });
+        console.log(this.state.maxShare);
       } else {
         const formData = new FormData();
         formData.append("image", this.state.image);
