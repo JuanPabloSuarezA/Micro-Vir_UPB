@@ -15,7 +15,6 @@ const Image = require("../models/Image");
 
 //Home
 router.post("/", async (req, res) => {
-  
   //Subidas
   const token = req.body.token;
   const { email } = jwt.verify(token, process.env.JWT_SECRET);
@@ -27,17 +26,19 @@ router.post("/", async (req, res) => {
     }
   }); */
   //Shared
-  const imagesShared = await Image.find({shared: email},  
-    function ( err , result ) {
-    if ( err ) {
-      console.log(err)
-     /*  res. send ( err ) ; */
-    } else {
-      console.log(result)
-      /* res. json( resultado ) ; */
+  const imagesShared = await Image.find(
+    { shared: email },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        /*  res. send ( err ) ; */
+      } else {
+        console.log(result);
+        /* res. json( resultado ) ; */
+      }
     }
-  })
-  console.log(imagesShared)
+  );
+  console.log(imagesShared);
   /* const allImages = Object.assign(images, imagesShared); */
   res.send(imagesShared);
 });
@@ -65,15 +66,21 @@ router.get("/image/:id/delete", async (req, res) => {
     //Decodifico el token para obtener el email y saber qué usuario está logeado
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
     //Hago una consulta a mongo para saber el maxShare actual de dicho usuario
-    const { maxShare } = await User.findOne({ email: email });
+    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
     //Ahora opero los tamaños para hallar el nuevo al borrar la imagen
     const newSize = Number(maxShare) + Number(imageSize);
+
+    const newUsedQuota = Number(usedQuota) - Number(imageSize);
+
     //Se hace una consulta a mongo y actualizamos la cuota máxima (maxShare)
     await User.findOneAndUpdate(
       { email: email },
       {
         $set: {
           maxShare: newSize,
+          usedQuota: newUsedQuota,
         },
       }
     );
@@ -90,19 +97,22 @@ router.get("/image/:id/delete-shared", async (req, res) => {
   try {
     const { id } = req.params;
     //Extraigo los params
-    const {Token} = req.query;
+    const { Token } = req.query;
     //Decodifico el token para obtener el email y saber qué usuario está logeado
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
-    await Image.findOneAndUpdate({_id: id}, {
-      $pull:{
-      shared: email
-    }});
+    await Image.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          shared: email,
+        },
+      }
+    );
     res.send(true);
   } catch (e) {
     console.log(e);
   }
-})
-
+});
 //Update image
 router.get("/image/:id/update", async (req, res) => {
   try {
@@ -130,9 +140,15 @@ router.post("/upload", async (req, res) => {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     const imageSize = req.file.size * (9.31 * 10 ** -10);
-    const { maxShare } = await User.findOne({ email: email });
+    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
     const newSize = maxShare - imageSize;
-    if (newSize < 0) {
+    const newUsedQuota = usedQuota + imageSize;
+
+    const valid = diskQuota - newUsedQuota;
+
+    if (valid < 0) {
       res.send(false);
     } else {
       try {
@@ -152,12 +168,13 @@ router.post("/upload", async (req, res) => {
           {
             $set: {
               maxShare: newSize,
+              usedQuota: newUsedQuota,
             },
           }
         );
         res.send(true);
       } catch (e) {
-        console.log(e)
+        console.log(e);
         res.send(false);
       }
     }
@@ -170,29 +187,31 @@ router.post("/upload", async (req, res) => {
 
 //Compartir imagen con otros usuarios
 router.post("/shared", async (req, res) => {
-  const {params} = req.body;
-  const {email, id} = params;
-  const userValidate = await User.findOne({email: email});
-  console.log(userValidate)
-  if(userValidate){
-    Image.updateOne({_id: id}, {
-      $addToSet:{
-        shared: [email]
+  const { params } = req.body;
+  const { email, id } = params;
+  const userValidate = await User.findOne({ email: email });
+  console.log(userValidate);
+  if (userValidate) {
+    Image.updateOne(
+      { _id: id },
+      {
+        $addToSet: {
+          shared: [email],
+        },
+      },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
       }
-    },
-    function(err, result){
-      if(err){
-        console.log(err)
-      }else{
-        console.log(result)
-      }
-    })
+    );
     res.send(true);
-  }else{
+  } else {
     res.send(false);
     console.log("Usuario no encontrado");
   }
-  
-})
+});
 
 module.exports = router;

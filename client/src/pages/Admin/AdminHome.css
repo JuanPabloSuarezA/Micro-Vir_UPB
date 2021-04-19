@@ -24,3 +24,7 @@
 .ant-spin-container {
   padding-left: 90px;
 }
+
+.none {
+  background-color: rgba(223, 223, 223, 0.651);
+}

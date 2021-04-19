@@ -5,56 +5,86 @@ import LayoutUser from "../../layouts/LayoutUser";
 import App from "../../App";
 import "./AdminHome.css";
 import { Container, Row, Col } from "react-bootstrap";
+
 import {
   Table,
-  Tag,
-  Space,
-  Button,
   Popconfirm,
   message,
+  Button,
   notification,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Checkbox,
+  Descriptions,
+  Badge,
+  Tag,
+  DatePicker,
 } from "antd";
-import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  LockOutlined,
+  SmileOutlined,
+  UserOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 
 export default class AdminHome extends React.Component {
   constructor() {
     super();
+    this.wrapper = React.createRef();
     this.state = {
       user: "",
       users: [],
       opcionSeleccionada: "",
       exitoso: false,
+      email: "",
+      userName: "",
+      access: "",
+      diskQuota: "",
+      usedQuota: "",
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.confirmEliminar = this.confirmEliminar.bind(this);
+    this.showModal = this.showModal.bind(this);
   }
+
   LoadData() {
-    const formData = new FormData();
-    formData.append("Token", localStorage.getItem("authToken"));
-    formData.append("tipo", "profile");
-
     axios
-      .post("http://localhost:4000/profile", formData)
-      .then((res) => {
-        this.setState({
-          user: res.data.usuario,
-        });
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((response) => {
+        this.setState({
+          user: response.data.usuario,
+        });
 
-    axios
-      .post("http://localhost:4000/profile/usersList", formData)
-      .then((res) => {
-        this.setState({
-          users: res.data,
-        });
+        if (response.data.usuario.access > 1) {
+          axios
+            .get("http://localhost:4000/profile/usersList", {
+              params: {
+                Token: localStorage.getItem("authToken"),
+              },
+            })
+            .then((response) => {
+              this.setState({
+                users: response.data,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }
+
   componentDidMount() {
     this.LoadData();
   }
@@ -107,7 +137,119 @@ export default class AdminHome extends React.Component {
     }
   }
 
+  handleUpdate() {
+    const wemail = this.wrapper.current.getFieldValue("email");
+    const waccess = this.wrapper.current.getFieldValue("access");
+    const wdiskQuota = this.wrapper.current.getFieldValue("diskQuota");
+
+    var numeros = false;
+
+    try {
+      Number(wdiskQuota);
+      numeros = true;
+      if (isNaN(Number(wdiskQuota)) || isNaN(Number(waccess))) {
+        numeros = false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!numeros) {
+      notification["error"]({
+        message: "Debes ingresar valores numéricos",
+        icon: <CloseCircleFilled style={{ color: "red" }} />,
+      });
+    } else if (!Number.isInteger(Number(waccess))) {
+      notification["error"]({
+        message: "El acceso debe ser un entero",
+        icon: <CloseCircleFilled style={{ color: "red" }} />,
+      });
+    } else if (Number(waccess) < 0 || Number(waccess) > 2) {
+      notification["error"]({
+        message: "Debes ingresar un acceso entre 0 y 2",
+        icon: <CloseCircleFilled style={{ color: "red" }} />,
+      });
+    } else if (wdiskQuota < this.state.usedQuota) {
+      notification["error"]({
+        message:
+          "El espacio máximo debe ser igual o mayor al usado actualmente",
+        icon: <CloseCircleFilled style={{ color: "red" }} />,
+      });
+    } else {
+      axios
+        .get("http://localhost:4000/profile/updateUser", {
+          params: {
+            email: wemail,
+            access: waccess,
+            diskQuota: wdiskQuota,
+          },
+        })
+        .then(async (response) => {
+          notification["success"]({
+            message: "Actualización exitosa ",
+            icon: <CheckCircleFilled style={{ color: "greenyellow" }} />,
+          });
+          this.LoadData();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  showModal = (record) => {
+    this.setState({
+      visible: true,
+    });
+
+    this.setState({
+      email: record.email,
+      userName: record.userName,
+      access: record.access,
+      diskQuota: record.diskQuota,
+      usedQuota: record.usedQuota,
+    });
+
+    if (this.wrapper.current) {
+      this.wrapper.current.setFieldsValue({
+        email: record.email,
+        userName: record.userName,
+        access: record.access,
+        diskQuota: record.diskQuota,
+      });
+    }
+  };
+
+  handleOk = (e) => {
+    this.setState({
+      visible: false,
+    });
+
+    this.handleUpdate();
+  };
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
+    const { Column, ColumnGroup } = Table;
+
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+
+    function cancel(e) {
+      message.error("Click on No");
+    }
+
     if (this.state.user.access < 2) {
       return (
         <>
@@ -115,12 +257,6 @@ export default class AdminHome extends React.Component {
           <Redirect to="/" component={App} />
         </>
       );
-    }
-
-    const { Column, ColumnGroup } = Table;
-
-    function cancel(e) {
-      message.error("Click on No");
     }
 
     return (
@@ -133,6 +269,22 @@ export default class AdminHome extends React.Component {
             render={(text) => <a>{text}</a>}
           />
           <Column title="Email" dataIndex="email" key="email" />
+          <Column
+            title="Cuota de disco"
+            dataIndex="diskQuota"
+            key="diskQuota"
+            render={(diskQuota) => {
+              return <p>{diskQuota} GB</p>;
+            }}
+          />
+          <Column
+            title="Cuota usada"
+            dataIndex="usedQuota"
+            key="usedQuota"
+            render={(usedQuota) => {
+              return <p>{usedQuota} GB</p>;
+            }}
+          />
           <Column
             title="Nivel de acceso"
             dataIndex="access"
@@ -167,7 +319,9 @@ export default class AdminHome extends React.Component {
             key="action"
             render={(text, record) => (
               <Space size="middle">
-                <Button type="primary">Editar</Button>
+                <Button type="primary" onClick={() => this.showModal(record)}>
+                  Editar
+                </Button>
                 <Popconfirm
                   title="Confirma si deseas eliminar"
                   onConfirm={() => this.confirmEliminar(record)}
@@ -182,6 +336,89 @@ export default class AdminHome extends React.Component {
             )}
           />
         </Table>
+
+        <Modal
+          title="Editar datos del usuario"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          okText="Confirmar"
+          cancelText="Cancelar"
+          onCancel={this.handleCancel}
+          okButtonProps={{
+            disabled: false,
+          }}
+          cancelButtonProps={{ disabled: false }}
+        >
+          <Form
+            ref={this.wrapper}
+            name="control-ref"
+            initialValues={{
+              email: this.state.email,
+              userName: this.state.userName,
+              access: this.state.access,
+              diskQuota: this.state.diskQuota,
+              usedQuota: this.state.usedQuota,
+            }}
+            {...layout}
+          >
+            <Form.Item
+              label="Correo electrónico"
+              name="email"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <Input
+                disabled={true}
+                style={{
+                  backgroundColor: "rgba(223, 223, 223, 0.651)",
+                  color: "black",
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Nombre de usuario"
+              name="userName"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <Input
+                disabled={true}
+                style={{
+                  backgroundColor: "rgba(223, 223, 223, 0.651)",
+                  color: "black",
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Nivel de acceso"
+              name="access"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Cuota de disco (GB)  "
+              name="diskQuota"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     );
   }

@@ -52,14 +52,18 @@ export default class MenuTop extends Component {
     formData.append("tipo", "profile");
 
     axios
-      .post("http://localhost:4000/profile", formData)
-      .then((res) => {
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
         this.setState({
-          user: res.data.usuario,
+          user: response.data.usuario,
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }
   componentDidMount() {
