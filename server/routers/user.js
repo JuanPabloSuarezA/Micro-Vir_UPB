@@ -42,11 +42,31 @@ router.get("/updateProfile", async (req, res) => {
   }
 });
 
+//Update user by admin
+router.get("/updateUser", async (req, res) => {
+  try {
+    const { email, access, diskQuota } = req.query;
+    await User.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          email: email,
+          access: access,
+          diskQuota: diskQuota,
+        },
+      }
+    );
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
+});
+
 //Send all users
-router.post("/usersList", async (req, res) => {
-  const token = req.body.Token;
-  console.log(token);
-  const { email } = jwt.verify(token, process.env.JWT_SECRET);
+router.get("/usersList", async (req, res) => {
+  const { Token } = req.query;
+  const user = jwt.verify(Token, process.env.JWT_SECRET);
+  const { email } = user;
   const users = await User.find();
   res.send(users);
 });

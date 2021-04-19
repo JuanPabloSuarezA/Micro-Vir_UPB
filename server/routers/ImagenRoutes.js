@@ -66,15 +66,21 @@ router.get("/image/:id/delete", async (req, res) => {
     //Decodifico el token para obtener el email y saber qué usuario está logeado
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
     //Hago una consulta a mongo para saber el maxShare actual de dicho usuario
-    const { maxShare } = await User.findOne({ email: email });
+    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
     //Ahora opero los tamaños para hallar el nuevo al borrar la imagen
     const newSize = Number(maxShare) + Number(imageSize);
+
+    const newUsedQuota = Number(usedQuota) - Number(imageSize);
+
     //Se hace una consulta a mongo y actualizamos la cuota máxima (maxShare)
     await User.findOneAndUpdate(
       { email: email },
       {
         $set: {
           maxShare: newSize,
+          usedQuota: newUsedQuota,
         },
       }
     );
@@ -134,9 +140,15 @@ router.post("/upload", async (req, res) => {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     const imageSize = req.file.size * (9.31 * 10 ** -10);
-    const { maxShare } = await User.findOne({ email: email });
+    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
     const newSize = maxShare - imageSize;
-    if (newSize < 0) {
+    const newUsedQuota = usedQuota + imageSize;
+
+    const valid = diskQuota - newUsedQuota;
+
+    if (valid < 0) {
       res.send(false);
     } else {
       try {
@@ -156,6 +168,7 @@ router.post("/upload", async (req, res) => {
           {
             $set: {
               maxShare: newSize,
+              usedQuota: newUsedQuota,
             },
           }
         );

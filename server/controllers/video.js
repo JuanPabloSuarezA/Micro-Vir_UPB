@@ -48,9 +48,15 @@ const UploadVideo = async (req, res) => {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     const videoSize = req.file.size * (9.31 * 10 ** -10);
-    const { maxShare } = await User.findOne({ email: email });
+    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
+    const newUsedQuota = usedQuota + videoSize;
+
+    const valid = diskQuota - newUsedQuota;
+
     const newSize = maxShare - videoSize;
-    if (newSize < 0) {
+    if (valid < 0) {
       res.send(false);
     } else {
       try {
@@ -75,6 +81,7 @@ const UploadVideo = async (req, res) => {
               {
                 $set: {
                   maxShare: newSize,
+                  usedQuota: newUsedQuota,
                 },
               }
             );
@@ -100,11 +107,13 @@ const DeleteVideo = async (req, res) => {
     const { maxShare } = await User.findOne({ email: email });
     // const videoSize = sizeVideo;
     const newSize = Number(maxShare) + Number(sizeVideo);
+    const newUsedQuota = Number(usedQuota) - Number(imageSize);
     await User.findOneAndUpdate(
       { email: email },
       {
         $set: {
           maxShare: newSize,
+          usedQuota: newUsedQuota,
         },
       }
     );

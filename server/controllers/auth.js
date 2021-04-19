@@ -12,6 +12,8 @@ exports.register = async (req, res, next) => {
   } = req.body;
   const access = 1;
   const maxShare = 1;
+  const diskQuota = 1;
+  const usedQuota = 0;
 
   try {
     const user = await User.create({
@@ -23,6 +25,8 @@ exports.register = async (req, res, next) => {
       birthDate,
       access,
       maxShare,
+      diskQuota,
+      usedQuota,
     });
 
     sendToken(user, 201, res);
