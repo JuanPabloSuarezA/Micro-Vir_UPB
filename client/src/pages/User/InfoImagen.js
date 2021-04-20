@@ -6,7 +6,7 @@ import "antd/lib/notification/style/css";
 import { SmileOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-import {IP_SERVER, PORT} from "../../api/cofig.js";
+import { IP_SERVER, PORT } from "../../api/cofig.js";
 
 import {
   Popconfirm,
@@ -308,15 +308,19 @@ export default class InfoImagen extends React.Component {
               height: "auto",
             }}
           >
-            {valid()}
-
+            <div style={{ textAlign: "center" }}>
+              <span style={{ display: "inline-block" }}>{valid()}</span>
+            </div>
             <div
               style={{
                 textAlign: "left",
                 border: "solid black 1px",
                 borderRadius: "20px",
                 backgroundColor: "rgb(234 234 247)",
-                paddingLeft: "10px",
+                paddingLeft: "19px",
+                paddingRight: "19px",
+                width: "fit-content",
+                margin: "0 auto",
               }}
             >
               <p>
