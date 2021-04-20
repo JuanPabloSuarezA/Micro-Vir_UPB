@@ -207,7 +207,7 @@ export default class PerfilComponent extends React.Component {
                   span={2}
                   labelStyle={{ fontWeight: "bold" }}
                 >
-                  {this.state.user.email}
+                  <>{this.state.user.email}</>
                 </Descriptions.Item>
                 <Descriptions.Item
                   label="Nombre de usuario"
@@ -236,7 +236,7 @@ export default class PerfilComponent extends React.Component {
                   {this.state.user.birthDate}
                 </Descriptions.Item>
                 <Descriptions.Item
-                  label="Cuota usada"
+                  label="Espacio usado"
                   span={1}
                   labelStyle={{ fontWeight: "bold" }}
                 >
@@ -245,7 +245,7 @@ export default class PerfilComponent extends React.Component {
                 </Descriptions.Item>
 
                 <Descriptions.Item
-                  label="Cuota maxima"
+                  label="Espacio máximo"
                   span={1}
                   labelStyle={{ fontWeight: "bold" }}
                 >

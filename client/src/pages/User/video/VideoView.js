@@ -261,12 +261,15 @@ export default class VideoView extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <div style={{ alignItems: "center" }}>
+          <div
+            style={{ alignItems: "center", maxWidth: "60%", height: "auto" }}
+          >
             <video
               controls
               autoPlay
               muted
-              style={{ height: "350px", width: "600px" }}
+              style={{ maxWidth: "100%", height: "auto" }}
+              // style={{ height: "350px", width: "600px" }}
             >
               <source
                 src={`http://localhost:4000/videos/${this.state.idVideo}`}
@@ -277,16 +280,33 @@ export default class VideoView extends Component {
               style={{
                 textAlign: "left",
                 border: "solid black 1px",
-                backgroundColor: "rgb(228 228 255)",
+                borderRadius: "20px",
+                backgroundColor: "rgb(234 234 247)",
+                paddingLeft: "10px",
               }}
             >
-              <h6>{"Título: " + this.state.videoInfo.title}</h6>
-              <h6>{"Duración: " + this.state.videoInfo.duration}</h6>
-              <h6>{"Descripción: " + this.state.videoInfo.description}</h6>
-              <h6>{"Autor: " + this.state.videoInfo.author}</h6>
-              <h6>
-                {"Fecha de creación: " + convertToDate(this.state.videoInfo)}
-              </h6>
+              <p>
+                {" "}
+                <strong>Título: </strong> {this.state.videoInfo.title}
+              </p>
+              <p>
+                {" "}
+                <strong>Duración: </strong> {this.state.videoInfo.duration}
+              </p>
+              <p>
+                {" "}
+                <strong>Descripción: </strong>{" "}
+                {this.state.videoInfo.description}
+              </p>
+              <p>
+                {" "}
+                <strong>Autor: </strong> {this.state.videoInfo.author}
+              </p>
+              <p>
+                {" "}
+                <strong>Fecha de creación:</strong>{" "}
+                {convertToDate(this.state.videoInfo)}
+              </p>
 
               <div
                 style={{

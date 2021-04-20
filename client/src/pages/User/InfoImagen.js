@@ -206,7 +206,7 @@ export default class InfoImagen extends React.Component {
             src={`http://localhost:4000/images/${this.state.image.fileName}`}
             className="card-img-top"
             alt="..."
-            style={{ height: "300px", width: "300px" }}
+            style={{ maxWidth: "100%", height: "auto" }}
           />
         );
       }
@@ -293,7 +293,7 @@ export default class InfoImagen extends React.Component {
           justifyContent: "center",
           alignItems: "center",
           position: "sticky",
-          top: "8rem",
+          top: "2rem",
         }}
       >
         <header className="App-header">
@@ -302,6 +302,8 @@ export default class InfoImagen extends React.Component {
               alignItems: "center",
 
               marginBottom: "200px",
+              maxWidth: "60%",
+              height: "auto",
             }}
           >
             {valid()}
@@ -310,13 +312,28 @@ export default class InfoImagen extends React.Component {
               style={{
                 textAlign: "left",
                 border: "solid black 1px",
-                backgroundColor: "rgb(228 228 255)",
+                borderRadius: "20px",
+                backgroundColor: "rgb(234 234 247)",
+                paddingLeft: "10px",
               }}
             >
-              <h6>{"Título: " + this.state.image.title}</h6>
-              <h6>{"Descripción: " + this.state.image.description}</h6>
-              <h6>{"Autor: " + this.state.image.author}</h6>
-              <h6>{"Fecha de creación: " + convertToDate(this.state.image)}</h6>
+              <p>
+                {" "}
+                <strong>Título: </strong> {this.state.image.title}
+              </p>
+              <p>
+                {" "}
+                <strong>Descripción: </strong> {this.state.image.description}
+              </p>
+              <p>
+                {" "}
+                <strong>Autor: </strong> {this.state.image.author}
+              </p>
+              <p>
+                {" "}
+                <strong>Fecha de creación:</strong>{" "}
+                {convertToDate(this.state.image)}
+              </p>
 
               <div
                 style={{
@@ -327,7 +344,7 @@ export default class InfoImagen extends React.Component {
                   <>
                     <Space size="middle">
                       <Button type="primary" onClick={this.showModal}>
-                        Editar
+                        Editar{" "}
                       </Button>
 
                       <Button
@@ -468,6 +485,7 @@ export default class InfoImagen extends React.Component {
               </div>
             </div>
             <hr></hr>
+            {this.state.imageDelete ? <Redirect to={"/"} /> : null}
           </div>
         </header>
       </div>

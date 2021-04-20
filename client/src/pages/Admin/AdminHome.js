@@ -269,6 +269,11 @@ export default class AdminHome extends React.Component {
       );
     }
 
+    const convertir = (value) => {
+      const bla = Number.parseFloat(value).toFixed(2);
+      return bla;
+    };
+
     const onRoleChange = (value) => {
       switch (value) {
         case "2":
@@ -305,7 +310,7 @@ export default class AdminHome extends React.Component {
             dataIndex="diskQuota"
             key="diskQuota"
             render={(diskQuota) => {
-              return <p>{diskQuota} GB</p>;
+              return <span>{diskQuota} GB</span>;
             }}
           />
           <Column
@@ -313,7 +318,8 @@ export default class AdminHome extends React.Component {
             dataIndex="usedQuota"
             key="usedQuota"
             render={(usedQuota) => {
-              return <p>{usedQuota} GB</p>;
+              const format = convertir(usedQuota);
+              return <span>{format} GB</span>;
             }}
           />
           <Column
