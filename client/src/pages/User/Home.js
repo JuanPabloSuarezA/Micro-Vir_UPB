@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import {IP_SERVER, PORT} from "../../api/cofig"
 //CSS
 import "./Home.css";
 //SVG
@@ -23,7 +24,7 @@ export default class Home extends React.Component {
     const formData = new FormData();
     formData.append("token", localStorage.getItem("authToken"));
     axios
-      .post("http://localhost:4000/", formData)
+      .post(`http://${IP_SERVER}:${PORT}/`, formData)
       .then((res) => {
         this.setState({
           ...this.state,
@@ -156,7 +157,7 @@ export default class Home extends React.Component {
                       <img
                         alt={image.filename}
                         className="card-img-top"
-                        src={`http://localhost:4000/images/${image.fileName}`} //{image.path}
+                        src={`http://${IP_SERVER}:${PORT}/images/${image.fileName}`} //{image.path}
                       />
                     }
                     bordered={true}

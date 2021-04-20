@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import axios from "axios";
+import {IP_SERVER, PORT} from "../../api/cofig"
 
 //Imports Antd
 import "antd/lib/notification/style/css";
@@ -22,7 +23,7 @@ export default class UploadImages extends React.Component {
   }
   LoadData() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -90,8 +91,8 @@ export default class UploadImages extends React.Component {
         axios
           .post(
             esImagen
-              ? "http://localhost:4000/upload"
-              : "http://localhost:4000/videos/upload",
+              ? `http://${IP_SERVER}:${PORT}/upload`
+              : `http://${IP_SERVER}:${PORT}/videos/upload`,
             formData
           )
           .then((res) => {

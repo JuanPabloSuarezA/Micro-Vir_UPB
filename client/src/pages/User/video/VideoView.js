@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import {IP_SERVER, PORT} from "../../../api/cofig"
 //Antd
 import "antd/lib/notification/style/css";
 import {
@@ -37,7 +38,7 @@ export default class VideoView extends Component {
 
   loadData() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -54,7 +55,7 @@ export default class VideoView extends Component {
 
   loadVideo() {
     axios
-      .get(`http://localhost:4000/videos/${this.state.idVideo}/videoInfo`, {
+      .get(`http://${IP_SERVER}:${PORT}/videos/${this.state.idVideo}/videoInfo`, {
         params: {
           id: this.state.idVideo,
         },
@@ -76,7 +77,7 @@ export default class VideoView extends Component {
 
     this.state.user.email === this.state.videoInfo.author
       ? axios
-          .get(`http://localhost:4000/videos/${this.state.idVideo}/delete`, {
+          .get(`http://${IP_SERVER}:${PORT}/videos/${this.state.idVideo}/delete`, {
             params: {
               Token: localStorage.getItem("authToken"),
               sizeVideo: this.state.videoInfo.size,
@@ -99,7 +100,7 @@ export default class VideoView extends Component {
           })
       : axios
           .get(
-            `http://localhost:4000/videos/${this.state.idVideo}/delete-shared`,
+            `http://${IP_SERVER}:${PORT}/videos/${this.state.idVideo}/delete-shared`,
             {
               params: {
                 Token: localStorage.getItem("authToken"),
@@ -136,7 +137,7 @@ export default class VideoView extends Component {
       });
     } else {
       axios
-        .get(`http://localhost:4000/videos/${this.state.idVideo}/update`, {
+        .get(`http://${IP_SERVER}:${PORT}/videos/${this.state.idVideo}/update`, {
           params: {
             Token: localStorage.getItem("authToken"),
             title: wtitle,
@@ -200,7 +201,7 @@ export default class VideoView extends Component {
     const onFinishD = (e) => {
       console.log(this.state);
       axios
-        .post(`http://localhost:4000/videos/sharedVideo`, {
+        .post(`http://${IP_SERVER}:${PORT}/videos/sharedVideo`, {
           params: {
             id: this.state.idVideo,
             email: this.state.shared,
@@ -272,7 +273,7 @@ export default class VideoView extends Component {
               // style={{ height: "350px", width: "600px" }}
             >
               <source
-                src={`http://localhost:4000/videos/${this.state.idVideo}`}
+                src={`http://${IP_SERVER}:${PORT}/videos/${this.state.idVideo}`}
                 type="video/mp4"
               ></source>
             </video>

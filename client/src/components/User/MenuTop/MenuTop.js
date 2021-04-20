@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { logOutApi } from "../../../api/auth";
 import axios from "axios";
+import {IP_SERVER, PORT} from "../../../api/cofig"
 //CSS
 import "./MenuTop.css";
 
@@ -52,7 +53,7 @@ export default class MenuTop extends Component {
     formData.append("tipo", "profile");
 
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
