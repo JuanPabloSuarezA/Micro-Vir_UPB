@@ -8,7 +8,7 @@ import "./video.css";
 import axios from "axios";
 import noVideosSvg from "../../../assets/icons/undraw_video_files_fu10.svg";
 import { Form, Select } from "antd";
-import {IP_SERVER, PORT} from "../../../api/cofig"
+import { IP_SERVER, PORT } from "../../../api/cofig";
 // import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css";
 const { Meta } = Card;
 
@@ -151,7 +151,7 @@ export default class StreamingHome extends Component {
               </div>
             ) : (
               this.state.videos.map((video) => (
-                <Col sm>
+                <Col sm key={video._id}>
                   <Link to={`/videos/${video._id}`}>
                     <Card
                       hoverable

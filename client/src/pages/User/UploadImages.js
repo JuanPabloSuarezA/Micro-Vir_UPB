@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import axios from "axios";
-import {IP_SERVER, PORT} from "../../api/cofig"
+import { IP_SERVER, PORT } from "../../api/cofig";
 
 //Imports Antd
 import "antd/lib/notification/style/css";
@@ -88,33 +88,61 @@ export default class UploadImages extends React.Component {
         formData.append("tipo", "upload");
 
         const esImagen = this.state.image.type.includes("image");
-        axios
-          .post(
-            esImagen
-              ? `http://${IP_SERVER}:${PORT}/upload`
-              : `http://${IP_SERVER}:${PORT}/videos/upload`,
-            formData
-          )
-          .then((res) => {
-            if (res.data) {
-              notification.open({
-                icon: <SmileOutlined />,
-                message: "Éxito",
-                description: "El archivo fue compartido correctamente",
-              });
-              this.LoadData();
-            } else {
-              notification.open({
-                icon: <SmileOutlined rotate={180} />,
-                message: "Error",
-                description:
-                  "El archivo no se ha cargado. Revisa tu cuota disponible o ha ocurrido un error",
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
+        const esVideo = this.state.image.type.includes("video");
+
+        if (esImagen) {
+          axios
+            .post(`http://${IP_SERVER}:${PORT}/upload`, formData)
+            .then((res) => {
+              if (res.data) {
+                notification.open({
+                  icon: <SmileOutlined />,
+                  message: "Éxito",
+                  description: "El archivo fue compartido correctamente",
+                });
+                this.LoadData();
+              } else {
+                notification.open({
+                  icon: <SmileOutlined rotate={180} />,
+                  message: "Error",
+                  description:
+                    "El archivo no se ha cargado. Revisa tu cuota disponible o ha ocurrido un error",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (esVideo) {
+          axios
+            .post(`http://${IP_SERVER}:${PORT}/videos/upload`, formData)
+            .then((res) => {
+              if (res.data) {
+                notification.open({
+                  icon: <SmileOutlined />,
+                  message: "Éxito",
+                  description: "El archivo fue compartido correctamente",
+                });
+                this.LoadData();
+              } else {
+                notification.open({
+                  icon: <SmileOutlined rotate={180} />,
+                  message: "Error",
+                  description:
+                    "El archivo no se ha cargado. Revisa tu cuota disponible o ha ocurrido un error",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          notification.open({
+            icon: <SmileOutlined rotate={180} />,
+            message: "Error",
+            description: "Solo puedes subir imagenes o videos en esta sección",
           });
+        }
       }
     };
 

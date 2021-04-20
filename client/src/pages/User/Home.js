@@ -2,7 +2,7 @@
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import {IP_SERVER, PORT} from "../../api/cofig"
+import { IP_SERVER, PORT } from "../../api/cofig";
 //CSS
 import "./Home.css";
 //SVG
@@ -150,7 +150,7 @@ export default class Home extends React.Component {
               </div>
             ) : (
               this.state.images.map((image) => (
-                <Col sm>
+                <Col sm key={image._id}>
                   <Card
                     className="antd-card-images"
                     cover={

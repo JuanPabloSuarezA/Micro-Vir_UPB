@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { logOutApi } from "../../../api/auth";
 import axios from "axios";
-import {IP_SERVER, PORT} from "../../../api/cofig"
+import { IP_SERVER, PORT } from "../../../api/cofig";
 //CSS
 import "./MenuTop.css";
 
@@ -99,16 +99,4 @@ export default class MenuTop extends Component {
       </div>
     );
   }
-  // <div className="btn-power">
-  //   <Popconfirm
-  //     title="¿Deseas cerrar sesión?"
-  //     onConfirm={logOut}
-  //     cancelText="No"
-  //     okText="Sí"
-  //   >
-  //     <Button type="link">
-  //       <PoweroffOutlined style={{ fontSize: "25px", color: "red" }} />
-  //     </Button>
-  //   </Popconfirm>
-  // </div>
 }

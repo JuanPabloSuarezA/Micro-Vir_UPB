@@ -1,10 +1,10 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { logOutApi } from "../../../api/auth";
-
+import { IP_SERVER, PORT } from "../../../api/cofig";
 //CSS
 import "./MenuSider.scss";
-
+import axios from "axios";
 //Antd
 import { Button, Layout, Menu } from "antd";
 import {
@@ -15,6 +15,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
   FileSyncOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons";
 
 export default function MenuTop(props) {
@@ -23,6 +24,32 @@ export default function MenuTop(props) {
     window.location.reload();
   };
   const { menuCollapsed } = props;
+
+  const [admin, setAdmin] = useState(false);
+
+  const LoadProfile = () => {
+    if (!localStorage.getItem("authToken")) {
+      return false;
+    }
+
+    axios
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.usuario.access);
+        if (response.data.usuario.access === 2) {
+          setAdmin(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return admin;
+  };
 
   const { Sider } = Layout;
   return (
@@ -59,6 +86,16 @@ export default function MenuTop(props) {
             <Link to={"/files"}>
               <FileSyncOutlined />
               <span>Archivos</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item
+            key="6"
+            className="client-sider_title"
+            style={{ visibility: LoadProfile() ? "visible" : "hidden" }}
+          >
+            <Link to={"/admin"}>
+              <SafetyCertificateOutlined />
+              <span>Administrar</span>
             </Link>
           </Menu.Item>
         </Menu>
