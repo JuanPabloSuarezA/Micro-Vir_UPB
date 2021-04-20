@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { getAccessToken } from "../../api/auth";
+import { getAccessToken, logOutApi } from "../../api/auth";
 import "./LoginComponent.css";
 //Import Andt
 import "antd/dist/antd.css";
@@ -14,32 +14,76 @@ export default class LoginComponent extends React.Component {
     this.state = {
       email: "",
       password: "",
+      access: "",
     };
+
+    this.LoadProfile = this.LoadProfile.bind(this);
   }
+
+  LoadProfile() {
+    console.log(localStorage.getItem("authToken"));
+    axios
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.usuario.access === 1) {
+          return <Redirect to={"/"} />;
+        } else if (response.data.usuario.access === 2) {
+          return <Redirect to={"/admin"} />;
+        } else {
+          logOutApi();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+    const params = {
+      email: this.state.email.toLowerCase(),
+      password: this.state.password,
+    };
+
     if (getAccessToken()) {
-      return <Redirect to={"/"} />;
+      this.LoadProfile();
     }
 
     const loginApi = async () => {
-      const config = {
-        header: {
-          "Content-Type": "application/json",
-        },
-      };
-      const params = {
-        email: this.state.email.toLowerCase(),
-        password: this.state.password,
-      };
       try {
         const { data } = await axios.post(
           "http://localhost:4000/auth/login",
           params,
           config
         );
-        localStorage.setItem("mail", params.email);
-        localStorage.setItem("authToken", data.token);
-        window.location.href = "/";
+
+        console.log(data.user.access);
+
+        if (data.user.access === 1) {
+          localStorage.setItem("mail", params.email);
+          localStorage.setItem("authToken", data.token);
+
+          window.location.href = "/";
+        } else if (data.user.access === 2) {
+          localStorage.setItem("mail", params.email);
+          localStorage.setItem("authToken", data.token);
+
+          window.location.href = "/admin";
+        } else {
+          notification.open({
+            icon: <SmileOutlined rotate={180} />,
+            message: "Error",
+            description: "Tu cuenta se encuentra bloqueada",
+          });
+        }
       } catch (e) {
         notification.open({
           icon: <SmileOutlined rotate={180} />,

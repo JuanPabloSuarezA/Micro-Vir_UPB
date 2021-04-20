@@ -11,7 +11,6 @@ exports.register = async (req, res, next) => {
     birthDate,
   } = req.body;
   const access = 1;
-  const maxShare = 1;
   const diskQuota = 1;
   const usedQuota = 0;
 
@@ -24,7 +23,6 @@ exports.register = async (req, res, next) => {
       lastName,
       birthDate,
       access,
-      maxShare,
       diskQuota,
       usedQuota,
     });
@@ -65,5 +63,5 @@ exports.login = async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
-  res.status(statusCode).json({ success: true, token });
+  res.status(statusCode).json({ success: true, token, user });
 };

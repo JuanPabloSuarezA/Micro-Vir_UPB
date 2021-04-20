@@ -1,4 +1,5 @@
 // import "./App.css";
+import axios from "axios";
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -9,15 +10,40 @@ import {
 import routes from "./config/routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./pages/Login";
+import { logOutApi } from "./api/auth";
 
 function App() {
+  const LoadProfile = () => {
+    if (!localStorage.getItem("authToken")) {
+      return false;
+    }
+
+    const check = true;
+    axios
+      .get("http://localhost:4000/profile", {
+        params: {
+          Token: localStorage.getItem("authToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.usuario.access === 0) {
+          logOutApi();
+          check = false;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return check;
+  };
   return (
     <React.Fragment>
       <Router>
         <Switch>
           <Route path={"/login"} exact={true} component={Login} />
           {/* comment for development */}
-          {localStorage.getItem("authToken") ? (
+          {LoadProfile() ? (
             routes.map((route, index) => (
               <RouteSubRoutes key={index} {...route} />
             ))

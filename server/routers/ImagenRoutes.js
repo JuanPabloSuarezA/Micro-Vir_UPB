@@ -66,11 +66,10 @@ router.get("/image/:id/delete", async (req, res) => {
     //Decodifico el token para obtener el email y saber qué usuario está logeado
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
     //Hago una consulta a mongo para saber el maxShare actual de dicho usuario
-    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+    const { diskQuota, usedQuota } = await User.findOne({
       email: email,
     });
     //Ahora opero los tamaños para hallar el nuevo al borrar la imagen
-    const newSize = Number(maxShare) + Number(imageSize);
 
     const newUsedQuota = Number(usedQuota) - Number(imageSize);
 
@@ -79,7 +78,6 @@ router.get("/image/:id/delete", async (req, res) => {
       { email: email },
       {
         $set: {
-          maxShare: newSize,
           usedQuota: newUsedQuota,
         },
       }
@@ -141,10 +139,9 @@ router.post("/upload", async (req, res) => {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     const imageSize = req.file.size * (9.31 * 10 ** -10);
-    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+    const { diskQuota, usedQuota } = await User.findOne({
       email: email,
     });
-    const newSize = maxShare - imageSize;
     const newUsedQuota = usedQuota + imageSize;
 
     const valid = diskQuota - newUsedQuota;
@@ -158,9 +155,9 @@ router.post("/upload", async (req, res) => {
         image.title = req.body.title;
         image.description = req.body.description;
         image.fileName = req.file.filename;
-        image.path = "http://192.168.100.38:8080/" + req.file.filename;
         image.originalName = req.file.originalname;
         image.mimetype = req.file.mimetype;
+        image.createdAt = Date(Date.now());
         image.size = imageSize;
         image.shared = [email.toLowerCase()];
         await image.save();
@@ -168,7 +165,6 @@ router.post("/upload", async (req, res) => {
           { email: email },
           {
             $set: {
-              maxShare: newSize,
               usedQuota: newUsedQuota,
             },
           }
@@ -191,7 +187,7 @@ router.post("/shared", async (req, res) => {
   const { params } = req.body;
   const { email, id } = params;
   const userValidate = await User.findOne({ email: email });
-  console.log(userValidate);
+
   if (userValidate) {
     Image.updateOne(
       { _id: id },

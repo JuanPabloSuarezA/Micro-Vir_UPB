@@ -1,9 +1,11 @@
 ﻿import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
 
 //Antd
 import "antd/lib/notification/style/css";
+import { SmileOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { Container, Row, Col } from "react-bootstrap";
 import {
   Popconfirm,
   message,
@@ -14,9 +16,11 @@ import {
   Form,
   Input,
   Checkbox,
-  Radio
+  Radio,
+  Select,
+  Card,
 } from "antd";
-import { SmileOutlined } from "@ant-design/icons";
+const { Meta } = Card;
 
 export default class InfoImagen extends React.Component {
   constructor(props) {
@@ -27,8 +31,8 @@ export default class InfoImagen extends React.Component {
       imageDelete: false,
       visible: false,
       visibleD: false,
-      user:"",
-      shared: ""
+      user: "",
+      shared: "",
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -69,7 +73,6 @@ export default class InfoImagen extends React.Component {
   componentDidMount() {
     this.loadData();
     this.loadImage();
-    
   }
 
   handleDelete(e) {
@@ -127,7 +130,6 @@ export default class InfoImagen extends React.Component {
           });
   }
 
-
   handleUpdate(e) {
     e.preventDefault();
     const wtitle = this.wrapper.current.getFieldValue("title");
@@ -172,7 +174,7 @@ export default class InfoImagen extends React.Component {
     this.setState({
       visible: true,
     });
-    console.log(this.state.image.author)
+    console.log(this.state.image.author);
   };
 
   handleOk = (e) => {
@@ -204,6 +206,7 @@ export default class InfoImagen extends React.Component {
             src={`http://localhost:4000/images/${this.state.image.fileName}`}
             className="card-img-top"
             alt="..."
+            style={{ height: "300px", width: "300px" }}
           />
         );
       }
@@ -271,144 +274,202 @@ export default class InfoImagen extends React.Component {
       });
     };
 
+    const convertToDate = (val) => {
+      if (val) {
+        const date = new Date(val.createdAt);
+        const stringDate = date.toISOString().substring(0, 10);
+        console.log(date);
+
+        return stringDate;
+      }
+      return "";
+    };
+
     return (
-      <div style={{ paddingLeft: "100px" }}>
-        <div className="card" style={{ width: "18rem" }}>
-          {/* <img
-            src={`http://localhost:4000/images/${this.state.image.fileName}`}
-            className="card-img-top"
-            alt="..."
-          /> */}
-          {valid()}
-          <div className="card-body">
-            <h5 className="card-title">
-              {"Título: " + this.state.image.title}
-            </h5>
-            <h6>{"Descripción: " + this.state.image.description}</h6>
-            <h6>{"Autor: " + this.state.image.author}</h6>
+      <div
+        className="App"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "sticky",
+          top: "8rem",
+        }}
+      >
+        <header className="App-header">
+          <div
+            style={{
+              alignItems: "center",
 
-            <Space size="middle">
-              <Radio.Group buttonStyle="solid">
-                {
-                  this.state.user.email === this.state.image.author ?
-                  <>
-                    <Radio.Button onClick={this.showModal}>
-                      Editar
-                    </Radio.Button>
-                    <Radio.Button  onClick={showModalD}>
-                      Compartir
-                    </Radio.Button>
-                  </>
-                  :
-                  <>
-                    <Radio.Button onClick={this.showModal} disabled>
-                      Editar
-                    </Radio.Button>
-                    <Radio.Button  onClick={showModalD} disabled>
-                      Compartir
-                    </Radio.Button>  
-                  </>
-                  
-                }
-                 <Popconfirm
-                  title="Confirma si deseas eliminar"
-                  onConfirm={this.handleDelete}
-                  okText="Sí"
-                  cancelText="No"
-                >
-                <Radio.Button >
-                    Eliminar
-                </Radio.Button>
-                </Popconfirm>
-              </Radio.Group>
-            </Space>
+              marginBottom: "200px",
+            }}
+          >
+            {valid()}
 
-            <Modal
-              title="Editar imagen"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-              okText="Confirmar"
-              cancelText="Cancelar"
-              okButtonProps={{ disabled: false }}
-              cancelButtonProps={{ disabled: false }}
+            <div
+              style={{
+                textAlign: "left",
+                border: "solid black 1px",
+                backgroundColor: "rgb(228 228 255)",
+              }}
             >
-              <Form
-                ref={this.wrapper}
-                name="control-ref"
-                initialValues={{
-                  title: this.state.image.title,
-                  description: this.state.image.description,
+              <h6>{"Título: " + this.state.image.title}</h6>
+              <h6>{"Descripción: " + this.state.image.description}</h6>
+              <h6>{"Autor: " + this.state.image.author}</h6>
+              <h6>{"Fecha de creación: " + convertToDate(this.state.image)}</h6>
+
+              <div
+                style={{
+                  textAlign: "center",
                 }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                {...layout}
               >
-                <Form.Item
-                  label="Título"
-                  name="title"
-                  rules={[
-                    {
-                      required: false,
-                    },
+                {this.state.user.email === this.state.image.author ? (
+                  <>
+                    <Space size="middle">
+                      <Button type="primary" onClick={this.showModal}>
+                        Editar
+                      </Button>
+
+                      <Button
+                        type="primary"
+                        onClick={showModalD}
+                        style={{ background: "green", borderColor: "green" }}
+                      >
+                        Compartir
+                      </Button>
+
+                      <Popconfirm
+                        title="Confirma si deseas eliminar"
+                        onConfirm={this.handleDelete}
+                        okText="Sí"
+                        cancelText="No"
+                      >
+                        <Button type="primary" danger>
+                          Eliminar
+                        </Button>
+                      </Popconfirm>
+                    </Space>
+                  </>
+                ) : (
+                  <>
+                    <Space size="middle">
+                      <Button
+                        type="primary"
+                        onClick={this.showModal}
+                        disabled={true}
+                      >
+                        Editar
+                      </Button>
+
+                      <Button
+                        type="primary"
+                        onClick={showModalD}
+                        disabled={true}
+                        style={{ background: "green", borderColor: "green" }}
+                      >
+                        Compartir
+                      </Button>
+
+                      <Popconfirm
+                        title="Confirma si deseas eliminar"
+                        onConfirm={this.handleDelete}
+                        okText="Sí"
+                        cancelText="No"
+                      >
+                        <Button type="primary" danger>
+                          Eliminar
+                        </Button>
+                      </Popconfirm>
+                    </Space>
+                  </>
+                )}
+
+                <Modal
+                  title="Editar imagen"
+                  visible={this.state.visible}
+                  onOk={this.handleOk}
+                  onCancel={this.handleCancel}
+                  okText="Confirmar"
+                  cancelText="Cancelar"
+                  okButtonProps={{ disabled: false }}
+                  cancelButtonProps={{ disabled: false }}
+                >
+                  <Form
+                    ref={this.wrapper}
+                    name="control-ref"
+                    initialValues={{
+                      title: this.state.image.title,
+                      description: this.state.image.description,
+                    }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    {...layout}
+                  >
+                    <Form.Item
+                      label="Título"
+                      name="title"
+                      rules={[
+                        {
+                          required: false,
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Descripción"
+                      name="description"
+                      rules={[
+                        {
+                          required: false,
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Form>
+                </Modal>
+                {/*-------------- Compartir ---------------------- */}
+
+                <Modal
+                  visible={this.state.visibleD}
+                  title="Compartir"
+                  onOk={handleOkD}
+                  onCancel={handleCancelD}
+                  footer={[
+                    <Button key="back" onClick={handleCancelD}>
+                      Cancelar
+                    </Button>,
                   ]}
                 >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item
-                  label="Descripción"
-                  name="description"
-                  rules={[
-                    {
-                      required: false,
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Form>
-            </Modal>
-            {/*-------------- Compartir ---------------------- */}
-
-
-            <Modal
-              visible={this.state.visibleD}
-              title="Compartir"
-              onOk={handleOkD}
-              onCancel={handleCancelD}
-              footer={[
-                <Button key="back" onClick={handleCancelD}>
-                  Cancelar
-                </Button>,
-              ]}
-            >
-              <Form name="basic" onFinish={onFinishD}>
-                <Form.Item
-                  name="correo"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Ingresa el correo eléctronico!",
-                    },
-                  ]}
-                >
-                  <Input
-                    onChange={handleSharedD}
-                    placeholder="Correo electrónico"
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Compartir
-                  </Button>
-                </Form.Item>
-              </Form>
-            </Modal>
-
+                  <Form name="basic" onFinish={onFinishD}>
+                    <Form.Item
+                      name="correo"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Ingresa el correo eléctronico!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleSharedD}
+                        placeholder="Correo electrónico"
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit">
+                        Compartir
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Modal>
+              </div>
+            </div>
+            <hr></hr>
           </div>
-          {this.state.imageDelete ? <Redirect to={"/"} /> : null}
-        </div>
+        </header>
       </div>
     );
   }

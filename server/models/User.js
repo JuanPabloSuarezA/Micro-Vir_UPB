@@ -26,8 +26,6 @@ const UserSchema = new mongoose.Schema({
   lastName: String,
   birthDate: String,
   access: Number,
-  //Cuota máxima
-  maxShare: Number,
   diskQuota: Number,
   usedQuota: Number,
 });
@@ -51,7 +49,6 @@ UserSchema.methods.getSignedToken = function () {
       id: this._id,
       email: this.email,
       userName: this.userName,
-      maxShare: this.maxShare,
       firstName: this.firstName,
       lastName: this.lastName,
       birthDate: this.birthDate,

@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const videoSchema = new Schema({
   author: String,
-  name: String,
+  title: String,
   fileName: String,
   mimeType: String,
   originalName: String,

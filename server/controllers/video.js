@@ -51,27 +51,27 @@ const UploadVideo = async (req, res) => {
     const token = req.body.Token;
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     const videoSize = req.file.size * (9.31 * 10 ** -10);
-    const { maxShare, diskQuota, usedQuota } = await User.findOne({
+    const { diskQuota, usedQuota } = await User.findOne({
       email: email,
     });
     const newUsedQuota = usedQuota + videoSize;
 
     const valid = diskQuota - newUsedQuota;
 
-    const newSize = maxShare - videoSize;
     if (valid < 0) {
       res.send(false);
     } else {
       try {
         const video = new Video();
         video.author = email.toLowerCase();
-        video.name = req.body.title;
+        video.title = req.body.title;
         video.description = req.body.description;
         video.fileName = req.file.filename;
         video.originalName = req.file.originalname;
+        video.createdAt = Date(Date.now());
         video.mimetype = req.file.mimetype;
         video.size = videoSize;
-        video.shared = [email.toLowerCase()]
+        video.shared = [email.toLowerCase()];
         getVideoDurationInSeconds(`public/img/${video.fileName}`).then(
           async (duration) => {
             var date = new Date(0);
@@ -84,7 +84,6 @@ const UploadVideo = async (req, res) => {
               { email: email },
               {
                 $set: {
-                  maxShare: newSize,
                   usedQuota: newUsedQuota,
                 },
               }
@@ -108,19 +107,22 @@ const DeleteVideo = async (req, res) => {
     const { id } = req.params;
     const { Token, sizeVideo } = req.query;
     const { email } = jwt.verify(Token, process.env.JWT_SECRET);
-    const { maxShare } = await User.findOne({ email: email });
-    // const videoSize = sizeVideo;
-    const newSize = Number(maxShare) + Number(sizeVideo);
-    const newUsedQuota = Number(usedQuota) - Number(imageSize);
+
+    const { diskQuota, usedQuota } = await User.findOne({
+      email: email,
+    });
+    console.log(sizeVideo);
+    const newUsedQuota = Number(usedQuota) - Number(sizeVideo);
+
     await User.findOneAndUpdate(
       { email: email },
       {
         $set: {
-          maxShare: newSize,
           usedQuota: newUsedQuota,
         },
       }
     );
+
     const videoDeleted = await Video.findByIdAndDelete(id);
 
     await unlink(path.resolve(imgFolder + `/${videoDeleted.fileName}`));
@@ -162,7 +164,7 @@ const UpdateVideo = async (req, res) => {
       { fileName: fileName },
       {
         $set: {
-          name: title,
+          title: title,
           description: description,
         },
       }
@@ -257,7 +259,7 @@ const StreamVideo = async (req, res, next) => {
 const SharedVideo = async (req, res) => {
   const { params } = req.body;
   const { email, id } = params;
-  console.log(id)
+  console.log(id);
   const userValidate = await User.findOne({ email: email });
   console.log(userValidate);
   if (userValidate) {
@@ -291,5 +293,5 @@ module.exports = {
   DeleteVideo,
   UpdateVideo,
   DeleteVideoShared,
-  SharedVideo
+  SharedVideo,
 };

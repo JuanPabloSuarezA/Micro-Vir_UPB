@@ -6,6 +6,7 @@ import "antd/lib/notification/style/css";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 import { Container, Row, Col } from "react-bootstrap";
+import userLogo from "../../assets/icons/submit.png";
 
 window.URL = window.URL || window.webkitURL;
 
@@ -44,6 +45,19 @@ export default class UploadImages extends React.Component {
   // }
 
   render() {
+    const defLogo = () => {
+      return (
+        <img
+          style={{
+            width: "200px",
+            height: "180px",
+          }}
+          src={userLogo}
+          alt="not found"
+        />
+      );
+    };
+
     const uploadImagenApi = async (e) => {
       e.preventDefault();
       if (
@@ -123,8 +137,15 @@ export default class UploadImages extends React.Component {
     };
     return (
       <Container className="videosContainer">
+        <Row>
+          <Col>{defLogo()}</Col>
+        </Row>
+
         <Row className="justify-content-md-center">
-          <div className="input-group" style={{ alignItems: "center" }}>
+          <div
+            className="input-group"
+            style={{ alignItems: "center", paddingLeft: "50px" }}
+          >
             <form onSubmit={uploadImagenApi} encType="multipart/form-data">
               <div className="mb-3">
                 <label className="form-label">Título</label>

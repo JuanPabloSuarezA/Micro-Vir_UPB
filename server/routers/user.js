@@ -17,7 +17,11 @@ router.get("/", async (req, res) => {
   const usuario = await User.findOne({ email: email });
   // user.maxShare.push('3');
 
-  res.send({ user: user, maxShare: usuario.maxShare, usuario });
+  res.send({
+    user: user,
+    maxShare: usuario.diskQuota - usuario.usedQuota,
+    usuario,
+  });
 });
 
 //Update user profile

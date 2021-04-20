@@ -21,7 +21,9 @@ import {
   Badge,
   Tag,
   DatePicker,
+  Select,
 } from "antd";
+
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -139,10 +141,14 @@ export default class AdminHome extends React.Component {
 
   handleUpdate() {
     const wemail = this.wrapper.current.getFieldValue("email");
-    const waccess = this.wrapper.current.getFieldValue("access");
+    var waccess = this.wrapper.current.getFieldValue("access");
     const wdiskQuota = this.wrapper.current.getFieldValue("diskQuota");
 
     var numeros = false;
+
+    if (!waccess) {
+      waccess = this.state.access;
+    }
 
     try {
       Number(wdiskQuota);
@@ -205,16 +211,15 @@ export default class AdminHome extends React.Component {
     this.setState({
       email: record.email,
       userName: record.userName,
-      access: record.access,
       diskQuota: record.diskQuota,
       usedQuota: record.usedQuota,
+      access: record.access,
     });
 
     if (this.wrapper.current) {
       this.wrapper.current.setFieldsValue({
         email: record.email,
         userName: record.userName,
-        access: record.access,
         diskQuota: record.diskQuota,
       });
     }
@@ -226,16 +231,21 @@ export default class AdminHome extends React.Component {
     });
 
     this.handleUpdate();
+    this.wrapper.current.resetFields();
   };
 
   handleCancel = (e) => {
     this.setState({
       visible: false,
     });
+
+    this.wrapper.current.resetFields();
   };
 
   render() {
     const { Column, ColumnGroup } = Table;
+
+    const { Option } = Select;
 
     const layout = {
       labelCol: {
@@ -258,6 +268,27 @@ export default class AdminHome extends React.Component {
         </>
       );
     }
+
+    const onRoleChange = (value) => {
+      switch (value) {
+        case "2":
+          this.wrapper.current.setFieldsValue({
+            access: 2,
+          });
+          return;
+
+        case "1":
+          this.wrapper.current.setFieldsValue({
+            access: 1,
+          });
+          return;
+        case "0":
+          this.wrapper.current.setFieldsValue({
+            access: 0,
+          });
+          return;
+      }
+    };
 
     return (
       <div>
@@ -355,7 +386,6 @@ export default class AdminHome extends React.Component {
             initialValues={{
               email: this.state.email,
               userName: this.state.userName,
-              access: this.state.access,
               diskQuota: this.state.diskQuota,
               usedQuota: this.state.usedQuota,
             }}
@@ -404,7 +434,21 @@ export default class AdminHome extends React.Component {
                 },
               ]}
             >
-              <Input />
+              <Select
+                placeholder="Selecciona el rol para el usuario"
+                onChange={() => onRoleChange}
+                allowClear
+              >
+                <Option value="2" style={{ color: "blue" }}>
+                  Administrador
+                </Option>
+                <Option value="1" style={{ color: "green" }}>
+                  Cliente
+                </Option>
+                <Option value="0" style={{ color: "tomato" }}>
+                  Bloqueado
+                </Option>
+              </Select>
             </Form.Item>
             <Form.Item
               label="Cuota de disco (GB)  "

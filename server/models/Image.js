@@ -4,7 +4,6 @@ const imageSchema = new Schema({
   author: String,
   title: String,
   fileName: String,
-  path: String,
   originalName: String,
   mimeType: String,
   size: Number,

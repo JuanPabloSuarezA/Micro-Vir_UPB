@@ -36,6 +36,7 @@ export default class PerfilComponent extends React.Component {
       maxShare: "",
       userName: "",
       birthDate: "",
+      diskQuotaa: "",
     };
 
     this.LoadProfile = this.LoadProfile.bind(this);
@@ -52,6 +53,13 @@ export default class PerfilComponent extends React.Component {
           user: response.data.usuario,
           maxShare: response.data.maxShare.toFixed(2),
           userName: response.data.usuario.userName,
+        });
+
+        const bla = Number.parseFloat(this.state.user.usedQuota).toFixed(2);
+        const bla2 = Number.parseFloat(this.state.user.diskQuota).toFixed(2);
+        this.setState({
+          maxShare: bla,
+          diskQuotaa: bla2,
         });
       })
       .catch((error) => {
@@ -228,14 +236,21 @@ export default class PerfilComponent extends React.Component {
                   {this.state.user.birthDate}
                 </Descriptions.Item>
                 <Descriptions.Item
-                  label="Cuota máxima"
-                  span={2}
+                  label="Cuota usada"
+                  span={1}
                   labelStyle={{ fontWeight: "bold" }}
                 >
-                  <Badge status="processing" />
-                  {this.state.maxShare >= 0
-                    ? `Te quedan ${this.state.maxShare} Gb de espacio disponible.`
-                    : `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`}
+                  <Badge color="yellow" status="processing" size="default" />
+                  {this.state.maxShare + " GB"}
+                </Descriptions.Item>
+
+                <Descriptions.Item
+                  label="Cuota maxima"
+                  span={1}
+                  labelStyle={{ fontWeight: "bold" }}
+                >
+                  <Badge status="processing" size="default" />
+                  {this.state.diskQuotaa + " GB"}
                 </Descriptions.Item>
 
                 <Descriptions.Item
@@ -336,55 +351,6 @@ export default class PerfilComponent extends React.Component {
           </Form>
         </Modal>
       </div>
-
-      // <Container className="perfil">
-      //   <Row className="justify-content-md-center">
-      //     <Col>
-      //       {defLogo(this.state.user.logo)}
-      //       <h3>
-      //         <a>{this.state.user.userName}</a>
-      //       </h3>
-      //       <br></br>
-      //       <p>
-      //         <strong>Correo</strong>
-      //         <br></br>
-      //         {this.state.user.email}
-      //       </p>
-      //       <p>
-      //         <strong>Nombres</strong>
-      //         <br></br>
-      //         {this.state.user.firstName}
-      //       </p>
-      //       <p>
-      //         <strong>Apellidos</strong>
-      //         <br></br>
-      //         {this.state.user.lastName}
-      //       </p>
-      //       <p>
-      //         <strong>Fecha de nacimiento </strong>
-      //         <br></br>
-      //         {this.state.user.birthDate}
-      //       </p>
-      //       <p>
-      //         <strong>Cuota máxima</strong>
-      //         <br></br>
-      //         {this.state.maxShare >= 0
-      //           ? `Te quedan ${this.state.maxShare} Gb de espacio disponible.`
-      //           : `Te quedan 0.00 Gb de espacio disponible, elimina algunos archivos o cambia de plan.`}
-      //       </p>
-
-      //       <p>
-      //         <strong>Tipo de acceso</strong>
-      //         <br></br>
-      //         <a>{rol(this.state.user.access)}</a>
-      //       </p>
-
-      //       <Button type="primary" onClick={this.handleUpdate}>
-      //         Editar
-      //       </Button>
-      //     </Col>
-      //   </Row>
-      // </Container>
     );
   }
 }
