@@ -6,6 +6,8 @@ import "antd/lib/notification/style/css";
 import { SmileOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
+import {IP_SERVER, PORT} from "../../api/cofig.js";
+
 import {
   Popconfirm,
   message,
@@ -40,7 +42,7 @@ export default class InfoImagen extends React.Component {
   }
   loadData() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -56,7 +58,7 @@ export default class InfoImagen extends React.Component {
   }
   loadImage() {
     axios
-      .get(`http://localhost:4000/image/${this.props.match.params.id}`, {
+      .get(`http://${IP_SERVER}:${PORT}/image/${this.props.match.params.id}`, {
         params: {
           id: this.props.match.params.id,
         },
@@ -80,7 +82,7 @@ export default class InfoImagen extends React.Component {
     this.state.user.email === this.state.image.author
       ? axios
           .get(
-            `http://localhost:4000/image/${this.props.match.params.id}/delete`,
+            `http://${IP_SERVER}:${PORT}/image/${this.props.match.params.id}/delete`,
             {
               params: {
                 Token: localStorage.getItem("authToken"),
@@ -105,7 +107,7 @@ export default class InfoImagen extends React.Component {
           })
       : axios
           .get(
-            `http://localhost:4000/image/${this.props.match.params.id}/delete-shared`,
+            `http://${IP_SERVER}:${PORT}/image/${this.props.match.params.id}/delete-shared`,
             {
               params: {
                 Token: localStorage.getItem("authToken"),
@@ -144,7 +146,7 @@ export default class InfoImagen extends React.Component {
     } else {
       axios
         .get(
-          `http://localhost:4000/image/${this.props.match.params.id}/update`,
+          `http://${IP_SERVER}:${PORT}/image/${this.props.match.params.id}/update`,
           {
             params: {
               Token: localStorage.getItem("authToken"),
@@ -203,7 +205,7 @@ export default class InfoImagen extends React.Component {
       if (this.state.image.fileName) {
         return (
           <img
-            src={`http://localhost:4000/images/${this.state.image.fileName}`}
+            src={`http://${IP_SERVER}:${PORT}/images/${this.state.image.fileName}`}
             className="card-img-top"
             alt="..."
             style={{ height: "300px", width: "300px" }}
@@ -240,7 +242,7 @@ export default class InfoImagen extends React.Component {
 
     const onFinishD = (e) => {
       axios
-        .post(`http://localhost:4000/shared`, {
+        .post(`http://${IP_SERVER}:${PORT}/shared`, {
           params: {
             id: this.state.image._id,
             email: this.state.shared,

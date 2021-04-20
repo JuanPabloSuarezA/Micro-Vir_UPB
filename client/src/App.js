@@ -11,6 +11,7 @@ import routes from "./config/routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./pages/Login";
 import { logOutApi } from "./api/auth";
+import {IP_SERVER, PORT} from "./api/cofig"
 
 function App() {
   const LoadProfile = () => {
@@ -20,7 +21,7 @@ function App() {
 
     const check = true;
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },

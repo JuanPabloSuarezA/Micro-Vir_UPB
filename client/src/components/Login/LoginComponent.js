@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import { getAccessToken, logOutApi } from "../../api/auth";
 import "./LoginComponent.css";
+import {IP_SERVER, PORT} from "../../api/cofig"
 //Import Andt
 import "antd/dist/antd.css";
 import { Form, Input, Button, notification } from "antd";
@@ -23,7 +24,7 @@ export default class LoginComponent extends React.Component {
   LoadProfile() {
     console.log(localStorage.getItem("authToken"));
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -60,7 +61,7 @@ export default class LoginComponent extends React.Component {
     const loginApi = async () => {
       try {
         const { data } = await axios.post(
-          "http://localhost:4000/auth/login",
+          `http://${IP_SERVER}:${PORT}/auth/login`,
           params,
           config
         );

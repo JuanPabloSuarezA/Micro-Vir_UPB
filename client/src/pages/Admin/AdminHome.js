@@ -5,6 +5,7 @@ import LayoutUser from "../../layouts/LayoutUser";
 import App from "../../App";
 import "./AdminHome.css";
 import { Container, Row, Col } from "react-bootstrap";
+import {IP_SERVER, PORT} from "../../api/cofig"
 
 import {
   Table,
@@ -55,7 +56,7 @@ export default class AdminHome extends React.Component {
 
   LoadData() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -67,7 +68,7 @@ export default class AdminHome extends React.Component {
 
         if (response.data.usuario.access > 1) {
           axios
-            .get("http://localhost:4000/profile/usersList", {
+            .get(`http://${IP_SERVER}:${PORT}/profile/usersList`, {
               params: {
                 Token: localStorage.getItem("authToken"),
               },
@@ -103,7 +104,7 @@ export default class AdminHome extends React.Component {
 
     if (datos.access < 2) {
       axios
-        .post("http://localhost:4000/profile/delete", formData)
+        .post(`http://${IP_SERVER}:${PORT}/profile/delete`, formData)
         .then((res) => {
           this.setState({
             exitoso: true,
@@ -183,7 +184,7 @@ export default class AdminHome extends React.Component {
       });
     } else {
       axios
-        .get("http://localhost:4000/profile/updateUser", {
+        .get(`http://${IP_SERVER}:${PORT}/profile/updateUser`, {
           params: {
             email: wemail,
             access: waccess,

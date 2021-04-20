@@ -8,6 +8,7 @@ import "./video.css";
 import axios from "axios";
 import noVideosSvg from "../../../assets/icons/undraw_video_files_fu10.svg";
 import { Form, Select } from "antd";
+import {IP_SERVER, PORT} from "../../../api/cofig"
 // import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css";
 const { Meta } = Card;
 
@@ -22,7 +23,7 @@ export default class StreamingHome extends Component {
     const formData = new FormData();
     formData.append("token", localStorage.getItem("authToken"));
     axios
-      .post("http://localhost:4000/videos", formData)
+      .post(`http://${IP_SERVER}:${PORT}/videos`, formData)
       .then((res) => {
         this.setState({ videos: res.data });
       })

@@ -3,6 +3,7 @@ import "./PerfilComponent.css";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import userLogo from "../../assets/icons/userLogo.png";
+import {IP_SERVER, PORT} from '../../api/cofig'
 import {
   Popconfirm,
   message,
@@ -43,7 +44,7 @@ export default class PerfilComponent extends React.Component {
   }
   LoadProfile() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
           Token: localStorage.getItem("authToken"),
         },
@@ -86,7 +87,7 @@ export default class PerfilComponent extends React.Component {
       });
     } else {
       axios
-        .get("http://localhost:4000/profile/updateProfile", {
+        .get(`http://${IP_SERVER}:${PORT}/profile/updateProfile`, {
           params: {
             Token: localStorage.getItem("authToken"),
             userName: wuserName,

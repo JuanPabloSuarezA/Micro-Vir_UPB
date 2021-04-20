@@ -10,6 +10,7 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import ApiFiles from "../../api/files";
 import axios from "axios";
+import {IP_SERVER, PORT} from "../../api/cofig"
 
 export default class RegisterForm extends React.Component {
   constructor() {
@@ -61,7 +62,7 @@ export default class RegisterForm extends React.Component {
         };
         try {
           const { data } = await axios.post(
-            "http://localhost:4000/auth/register",
+            `http://${IP_SERVER}:${PORT}/auth/register`,
             params,
             config
           );
