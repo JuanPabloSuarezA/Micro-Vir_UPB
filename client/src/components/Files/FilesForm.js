@@ -53,7 +53,7 @@ class FilesForm extends Component {
     }
     return (
       <>
-        {this.showAlert(this.state.alert)}
+        {/* {this.showAlert(this.state.alert)}
         <Form className="mb-3" onSubmit={(e) => this.onSubmit(e)}>
           
           <Form.File
@@ -64,7 +64,7 @@ class FilesForm extends Component {
           <Button variant="primary" type="submit">
             Cargar
           </Button>
-        </Form>
+        </Form> */}
       </>
     );
   }

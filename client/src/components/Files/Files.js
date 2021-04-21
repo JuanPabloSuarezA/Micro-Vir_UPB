@@ -91,8 +91,8 @@ class Files extends React.Component {
           ))}
           <h3>Crear Carpeta</h3>
           <MkDirForm path={this.state.apiPath} reload={() => this.reload()} />
-          <h3>Subir Archivo</h3>
-          <FilesForm uploadTo={this.state.apiPath} />
+          {/* <h3>Subir Archivo</h3>
+          <FilesForm uploadTo={this.state.apiPath} /> */}
         </Row>
       </Container>
     );
