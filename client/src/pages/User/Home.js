@@ -187,7 +187,6 @@ export default class Home extends React.Component {
             )}
           </Row>
         </Container>
-        {console.log(convertToDate(this.state.images[0]))}
       </div>
     );
   }

@@ -35,7 +35,6 @@ class Files extends React.Component {
     this.LoadData();
   }
   handleFormPath = async (path, apiPath) => {
-    console.log({ path, apiPath });
     await this.LoadData(apiPath, path);
   };
   handleAddPath = async (d) => {

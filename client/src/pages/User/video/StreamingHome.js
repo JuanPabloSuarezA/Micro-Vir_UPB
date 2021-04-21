@@ -30,17 +30,6 @@ export default class StreamingHome extends Component {
       .catch((err) => {
         console.log(err);
       });
-
-    // try {
-    //   const res = await fetch("http://localhost:4000/videos").then(
-    //     (response) => {
-    //       return response.json();
-    //     }
-    //   );
-    //   this.setState({ videos: [...res] });
-    // } catch (err) {
-    //   console.log(err);
-    // }
   }
   render() {
     const { Option } = Select;

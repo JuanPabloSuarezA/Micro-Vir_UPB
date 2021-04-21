@@ -111,7 +111,6 @@ const DeleteVideo = async (req, res) => {
     const { diskQuota, usedQuota } = await User.findOne({
       email: email,
     });
-    console.log(sizeVideo);
     const newUsedQuota = Number(usedQuota) - Number(sizeVideo);
 
     await User.findOneAndUpdate(
@@ -261,7 +260,6 @@ const SharedVideo = async (req, res) => {
   const { email, id } = params;
   console.log(id);
   const userValidate = await User.findOne({ email: email });
-  console.log(userValidate);
   if (userValidate) {
     Video.updateOne(
       { _id: id },

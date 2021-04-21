@@ -78,7 +78,6 @@ export default class UploadImages extends React.Component {
           description:
             "El archivo no se ha cargado. Revisa tu cuota disponible",
         });
-        console.log(this.state.maxShare);
       } else {
         const formData = new FormData();
         formData.append("image", this.state.image);

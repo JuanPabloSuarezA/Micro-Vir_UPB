@@ -100,7 +100,6 @@ export default class InfoImagen extends React.Component {
             await this.setState({
               imageDelete: response.data,
             });
-            console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -125,7 +124,6 @@ export default class InfoImagen extends React.Component {
             await this.setState({
               imageDelete: response.data,
             });
-            console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -176,7 +174,6 @@ export default class InfoImagen extends React.Component {
     this.setState({
       visible: true,
     });
-    console.log(this.state.image.author);
   };
 
   handleOk = (e) => {
@@ -249,7 +246,6 @@ export default class InfoImagen extends React.Component {
           },
         })
         .then(async (response) => {
-          console.log(response.data);
           if (response.data) {
             notification.open({
               icon: <SmileOutlined />,
@@ -280,7 +276,6 @@ export default class InfoImagen extends React.Component {
       if (val) {
         const date = new Date(val.createdAt);
         const stringDate = date.toISOString().substring(0, 10);
-        console.log(date);
 
         return stringDate;
       }

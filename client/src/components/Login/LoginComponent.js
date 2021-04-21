@@ -22,7 +22,6 @@ export default class LoginComponent extends React.Component {
   }
 
   LoadProfile() {
-    console.log(localStorage.getItem("authToken"));
     axios
       .get(`http://${IP_SERVER}:${PORT}/profile`, {
         params: {
@@ -66,7 +65,6 @@ export default class LoginComponent extends React.Component {
           config
         );
 
-        console.log(data.user.access);
 
         if (data.user.access === 1) {
           localStorage.setItem("mail", params.email);

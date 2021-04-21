@@ -12,7 +12,6 @@ class FilesForm extends Component {
   }
 
   onChange(e) {
-    console.log(e.target.files);
     this.setState({ files: e.target.files });
   }
 

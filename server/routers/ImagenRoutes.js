@@ -18,13 +18,6 @@ router.post("/", async (req, res) => {
   //Subidas
   const token = req.body.token;
   const { email } = jwt.verify(token, process.env.JWT_SECRET);
-  /* const images = await Image.find({ author: email }, (error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-    }
-  }); */
   //Shared
   const imagesShared = await Image.find(
     { shared: email },
@@ -38,7 +31,6 @@ router.post("/", async (req, res) => {
       }
     }
   );
-  console.log(imagesShared);
   /* const allImages = Object.assign(images, imagesShared); */
   res.send(imagesShared);
 });

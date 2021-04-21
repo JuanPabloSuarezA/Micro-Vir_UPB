@@ -199,7 +199,6 @@ export default class VideoView extends Component {
     };
 
     const onFinishD = (e) => {
-      console.log(this.state);
       axios
         .post(`http://${IP_SERVER}:${PORT}/videos/sharedVideo`, {
           params: {
@@ -208,7 +207,6 @@ export default class VideoView extends Component {
           },
         })
         .then(async (response) => {
-          console.log(response.data);
           if (response.data) {
             notification.open({
               icon: <SmileOutlined />,

@@ -39,7 +39,6 @@ export default function MenuTop(props) {
         },
       })
       .then((response) => {
-        console.log(response.data.usuario.access);
         if (response.data.usuario.access === 2) {
           setAdmin(true);
         }
