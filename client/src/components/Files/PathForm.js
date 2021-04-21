@@ -23,7 +23,6 @@ const PathForm = ({ path, handlePath }) => {
   return (
     <Form>
       <Form.Group controlId="formBasicEmail">
-        <Form.Label>Path</Form.Label>
         <Form.Control
           type="text"
           className="mb-2"
@@ -36,7 +35,7 @@ const PathForm = ({ path, handlePath }) => {
           type="button"
           onClick={(e) => handleClick(e)}
         >
-          Jump
+          Ingresar
         </Button>
       </Form.Group>
     </Form>

@@ -53,16 +53,16 @@ class MkDirForm extends Component {
         {this.showAlert(this.state.alert)}
         <Form onSubmit={(e) => this.onSubmit(e)}>
           <Form.Group controlId="mkdir">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nombre de la carpeta</Form.Label>
             <Form.Control
               type="text"
               className="mb-2"
-              placeholder="Name"
+              placeholder="Nombre de carpeta"
               value={this.state.name}
               onChange={(e) => this.onChange(e)}
             />
             <Button size="lg" variant="success" type="submit">
-              Create
+              Crear
             </Button>
           </Form.Group>
         </Form>

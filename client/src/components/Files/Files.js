@@ -61,7 +61,7 @@ class Files extends React.Component {
       <Container style={{ paddingLeft: "100px" }}>
         <Row className="justify-content-md-center">
           <h1 className="mr-1">Archivos</h1>
-          <h3>Path</h3>
+          <h3>Ruta</h3>
           <PathForm path={this.state.path} handlePath={this.handleFormPath} />
           <h3>Carpetas</h3>
           <button

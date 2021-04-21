@@ -55,14 +55,14 @@ class FilesForm extends Component {
       <>
         {this.showAlert(this.state.alert)}
         <Form className="mb-3" onSubmit={(e) => this.onSubmit(e)}>
-          <Form.Label>Upload File</Form.Label>
+          
           <Form.File
             multiple
             className="mb-2"
             onChange={(e) => this.onChange(e)}
           />
           <Button variant="primary" type="submit">
-            Upload
+            Cargar
           </Button>
         </Form>
       </>
